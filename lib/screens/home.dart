@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hirome_rental_shop_app/common/style.dart';
+import 'package:hirome_rental_shop_app/widgets/custom_product_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -9,6 +9,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,53 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 8),
         itemCount: 30,
         itemBuilder: (ctx, i) {
-          return Card(
-            elevation: 5,
-            child: Container(
-              height: 400,
-              margin: const EdgeInsets.all(4),
-              padding: const EdgeInsets.all(4),
-              child: Stack(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Expanded(
-                        child: Image.asset(
-                          'assets/images/default.png',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      const Padding(
-                        padding: EdgeInsets.all(4),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '食器No. 2',
-                              style: TextStyle(
-                                color: kGreyColor,
-                                fontSize: 10,
-                              ),
-                            ),
-                            Text(
-                              '醤油皿',
-                              style: TextStyle(
-                                color: kBlackColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
+          return const CustomProductCard();
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -88,8 +44,10 @@ class _HomeScreenState extends State<HomeScreen> {
         icon: const Icon(Icons.shopping_cart_checkout),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
-        onTap: (index) {},
+        currentIndex: currentIndex,
+        onTap: (index) {
+          setState(() => currentIndex = index);
+        },
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.flatware),
