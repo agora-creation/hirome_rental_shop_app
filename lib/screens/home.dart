@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hirome_rental_shop_app/widgets/custom_product_card.dart';
+import 'package:hirome_rental_shop_app/screens/history.dart';
+import 'package:hirome_rental_shop_app/screens/order.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,13 +11,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
+  List<Widget> body = [const OrderScreen(), const HistoryScreen()];
+  List<String> bodyTitle = ['食器注文', '注文履歴'];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text('珍味堂: 食器注文'),
+        title: Text('珍味堂: ${bodyTitle[currentIndex]}'),
         actions: [
           IconButton(
             onPressed: () {},
@@ -24,20 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 1,
-          crossAxisSpacing: 4,
-          mainAxisSpacing: 4,
-        ),
-        shrinkWrap: true,
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        itemCount: 30,
-        itemBuilder: (ctx, i) {
-          return const CustomProductCard();
-        },
-      ),
+      body: body[currentIndex],
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {},
         label: const Text('注文に進む'),

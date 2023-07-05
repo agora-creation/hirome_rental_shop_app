@@ -11,6 +11,7 @@ const kBaseColor = Color(0xFF03A9F4);
 const kWhiteColor = Color(0xFFFFFFFF);
 const kBlackColor = Color(0xFF333333);
 const kGreyColor = Color(0xFF9E9E9E);
+const kGrey2Color = Color(0xFF757575);
 const kRedColor = Color(0xFFF44336);
 const kBlueColor = Color(0xFF2196F3);
 const kLightBlueColor = Color(0xFF03A9F4);
@@ -43,11 +44,15 @@ ThemeData customTheme() {
       backgroundColor: kWhiteColor,
       elevation: 5,
       selectedItemColor: kBlueColor,
-      unselectedItemColor: kBlackColor,
+      unselectedItemColor: kGrey2Color,
     ),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: kBlueColor,
       elevation: 5,
+      extendedTextStyle: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontFamily: 'SourceHanSansJP-Bold',
+      ),
     ),
     visualDensity: VisualDensity.adaptivePlatformDensity,
     unselectedWidgetColor: kWhiteColor,
