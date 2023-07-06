@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hirome_rental_shop_app/common/style.dart';
 import 'package:hirome_rental_shop_app/widgets/product_card.dart';
 
 class OrderScreen extends StatefulWidget {
@@ -12,17 +13,37 @@ class _OrderScreenState extends State<OrderScreen> {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 1,
-        crossAxisSpacing: 4,
-        mainAxisSpacing: 4,
-      ),
+      gridDelegate: kProductGrid,
       shrinkWrap: true,
       padding: const EdgeInsets.symmetric(horizontal: 8),
       itemCount: 30,
-      itemBuilder: (ctx, i) {
-        return const ProductCard();
+      itemBuilder: (context, index) {
+        return ProductCard(
+          onTap: () => showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    '薪は狼煙を上げるのに使います。',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  const Text(
+                    '狼煙を上げるのに必要な薪の数は1本です。',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  const Text(
+                    '薪は最大10本持つことができ、薪は15分毎に1本回復します。',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ),
+            ),
+          ),
+        );
       },
     );
   }

@@ -58,3 +58,11 @@ ThemeData customTheme() {
     unselectedWidgetColor: kWhiteColor,
   );
 }
+
+const SliverGridDelegate kProductGrid =
+    SliverGridDelegateWithFixedCrossAxisCount(
+  crossAxisCount: 2,
+  childAspectRatio: 1,
+  crossAxisSpacing: 4,
+  mainAxisSpacing: 4,
+);
