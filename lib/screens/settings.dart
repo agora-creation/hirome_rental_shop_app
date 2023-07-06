@@ -20,7 +20,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         automaticallyImplyLeading: false,
         backgroundColor: kWhiteColor,
-        centerTitle: true,
         title: const Text(
           '珍味堂 : 設定',
           style: TextStyle(color: kBlackColor),

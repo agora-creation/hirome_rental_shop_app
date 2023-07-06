@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hirome_rental_shop_app/common/style.dart';
+import 'package:hirome_rental_shop_app/widgets/add_cart_button.dart';
 import 'package:hirome_rental_shop_app/widgets/product_card.dart';
+import 'package:hirome_rental_shop_app/widgets/quantity_button.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -21,30 +23,64 @@ class _OrderScreenState extends State<OrderScreen> {
         return ProductCard(
           onTap: () => showDialog(
             context: context,
-            builder: (context) => AlertDialog(
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    '薪は狼煙を上げるのに使います。',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  const Text(
-                    '狼煙を上げるのに必要な薪の数は1本です。',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  const Text(
-                    '薪は最大10本持つことができ、薪は15分毎に1本回復します。',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  const SizedBox(height: 16),
-                ],
-              ),
-            ),
+            builder: (context) => const ProductDetailsDialog(),
           ),
         );
       },
+    );
+  }
+}
+
+class ProductDetailsDialog extends StatefulWidget {
+  const ProductDetailsDialog({super.key});
+
+  @override
+  State<ProductDetailsDialog> createState() => _ProductDetailsDialogState();
+}
+
+class _ProductDetailsDialogState extends State<ProductDetailsDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      contentPadding: const EdgeInsets.all(16),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.asset(
+            kDefaultImageUrl,
+            fit: BoxFit.cover,
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            '食器No. 2',
+            style: TextStyle(
+              color: kGreyColor,
+              fontSize: 12,
+            ),
+          ),
+          const Text(
+            '醤油皿',
+            style: TextStyle(
+              color: kBlackColor,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          QuantityButton(
+            quantity: 1,
+            unit: '枚',
+            onRemoved: () {},
+            onAdded: () {},
+          ),
+          const SizedBox(height: 8),
+          AddCartButton(
+            onPressed: () {},
+          ),
+          const SizedBox(height: 8),
+        ],
+      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hirome_rental_shop_app/common/functions.dart';
 import 'package:hirome_rental_shop_app/screens/history.dart';
 import 'package:hirome_rental_shop_app/screens/order.dart';
+import 'package:hirome_rental_shop_app/screens/order_cart.dart';
 import 'package:hirome_rental_shop_app/screens/settings.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -35,7 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
       body: body[currentIndex],
       floatingActionButton: currentIndex == 0
           ? FloatingActionButton.extended(
-              onPressed: () {},
+              onPressed: () => showBottomUpScreen(
+                context,
+                const OrderCartScreen(),
+              ),
               label: const Text('注文に進む'),
               icon: const Icon(Icons.shopping_cart_checkout),
             )
