@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hirome_rental_shop_app/widgets/custom_product_card.dart';
+import 'package:hirome_rental_shop_app/widgets/product_card.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
@@ -22,7 +22,7 @@ class _OrderScreenState extends State<OrderScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 8),
       itemCount: 30,
       itemBuilder: (ctx, i) {
-        return const CustomProductCard();
+        return const ProductCard();
       },
     );
   }

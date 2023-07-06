@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hirome_rental_shop_app/common/functions.dart';
 import 'package:hirome_rental_shop_app/screens/history.dart';
 import 'package:hirome_rental_shop_app/screens/order.dart';
+import 'package:hirome_rental_shop_app/screens/settings.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,20 +21,25 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('珍味堂: ${bodyTitle[currentIndex]}'),
+        title: Text('珍味堂 : ${bodyTitle[currentIndex]}'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => showBottomUpScreen(
+              context,
+              const SettingsScreen(),
+            ),
             icon: const Icon(Icons.settings),
           ),
         ],
       ),
       body: body[currentIndex],
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
-        label: const Text('注文に進む'),
-        icon: const Icon(Icons.shopping_cart_checkout),
-      ),
+      floatingActionButton: currentIndex == 0
+          ? FloatingActionButton.extended(
+              onPressed: () {},
+              label: const Text('注文に進む'),
+              icon: const Icon(Icons.shopping_cart_checkout),
+            )
+          : null,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: (index) {

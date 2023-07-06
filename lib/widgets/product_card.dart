@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hirome_rental_shop_app/common/style.dart';
 
-class CustomProductCard extends StatelessWidget {
-  const CustomProductCard({super.key});
+class ProductCard extends StatelessWidget {
+  const ProductCard({super.key});
 
   @override
   Widget build(BuildContext context) {
