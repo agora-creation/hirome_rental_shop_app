@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "449757426730",
+    "project_id": "hirome-rental",
+    "storage_bucket": "hirome-rental.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:449757426730:android:2f080554371e0f2dd0bf53",
+        "android_client_info": {
+          "package_name": "com.agoracreation.hirome_rental_shop_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "449757426730-6r9risan3fpoticqqm8v9lso82rsdc73.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByt7FqAPU83LQ28hSy5DWFOYSe1SujlRE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "449757426730-6r9risan3fpoticqqm8v9lso82rsdc73.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

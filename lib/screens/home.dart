@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hirome_rental_shop_app/common/functions.dart';
+import 'package:hirome_rental_shop_app/common/style.dart';
 import 'package:hirome_rental_shop_app/screens/history.dart';
 import 'package:hirome_rental_shop_app/screens/order.dart';
 import 'package:hirome_rental_shop_app/screens/order_cart.dart';
@@ -44,22 +45,32 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: const Icon(Icons.shopping_cart_checkout),
             )
           : null,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (index) {
-          setState(() => currentIndex = index);
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.flatware),
-            label: '食器注文',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: '注文履歴',
-          ),
-        ],
-        type: BottomNavigationBarType.fixed,
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: kGrey2Color,
+              blurRadius: 5,
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          currentIndex: currentIndex,
+          onTap: (index) {
+            setState(() => currentIndex = index);
+          },
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.flatware),
+              label: '食器注文',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.list),
+              label: '注文履歴',
+            ),
+          ],
+          type: BottomNavigationBarType.fixed,
+        ),
       ),
     );
   }

@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="hirome_rental_shop_app"
+        android:label="ひろめ市場食器レンタルシステム 店舗専用"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

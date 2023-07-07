@@ -16,7 +16,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+      padding: const EdgeInsets.only(
+        left: 8,
+        right: 8,
+        bottom: 16,
+      ),
       child: Card(
         elevation: 5,
         child: Column(

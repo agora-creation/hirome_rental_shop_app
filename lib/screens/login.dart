@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hirome_rental_shop_app/common/functions.dart';
 import 'package:hirome_rental_shop_app/common/style.dart';
+import 'package:hirome_rental_shop_app/providers/auth.dart';
 import 'package:hirome_rental_shop_app/screens/home.dart';
 import 'package:hirome_rental_shop_app/widgets/custom_lg_button.dart';
 import 'package:hirome_rental_shop_app/widgets/custom_text_form_field.dart';
 import 'package:hirome_rental_shop_app/widgets/login_title.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,6 +18,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
@@ -32,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     children: [
                       CustomTextFormField(
-                        controller: TextEditingController(),
+                        controller: authProvider.number,
                         textInputType: TextInputType.number,
                         maxLines: 1,
                         label: '店舗番号',
@@ -41,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 8),
                       CustomTextFormField(
-                        controller: TextEditingController(),
+                        controller: authProvider.password,
                         obscureText: true,
                         textInputType: TextInputType.visiblePassword,
                         maxLines: 1,
@@ -54,7 +58,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         label: 'ログイン',
                         labelColor: kWhiteColor,
                         backgroundColor: kBlueColor,
-                        onPressed: () {
+                        onPressed: () async {
+                          String? error = await authProvider.signIn();
+                          if (error != null) {
+                            if (!mounted) return;
+                            //
+                            return;
+                          }
+                          authProvider.clearController();
+                          if (!mounted) return;
                           pushReplacementScreen(context, const HomeScreen());
                         },
                       ),

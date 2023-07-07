@@ -1,0 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hirome_rental_shop_app/models/shop.dart';
+
+class ShopService {
+  String collection = 'shop';
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  Future<ShopModel?> select({String? number, String? password}) async {
+    ShopModel? ret;
+    await firestore
+        .collection(collection)
+        .where('number', isEqualTo: number ?? 'error')
+        .where('password', isEqualTo: password ?? 'error')
+        .get()
+        .then((value) {
+      for (DocumentSnapshot<Map<String, dynamic>> map in value.docs) {
+        ret = ShopModel.fromSnapshot(map);
+      }
+    });
+    return ret;
+  }
+}
