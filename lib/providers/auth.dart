@@ -44,6 +44,8 @@ class AuthProvider with ChangeNotifier {
         );
         if (tmpShop != null) {
           _shop = tmpShop;
+          await setPrefsString('shopNumber', tmpShop.number);
+          await setPrefsString('shopPassword', tmpShop.password);
         } else {
           await auth?.signOut();
           error = 'ログインに失敗しました';
@@ -72,9 +74,14 @@ class AuthProvider with ChangeNotifier {
       _authUser = authUser;
       String? tmpShopNumber = await getPrefsString('shopNumber');
       String? tmpShopPassword = await getPrefsString('shopPassword');
-      if (tmpShopNumber == null || tmpShopPassword == null) {
+      ShopModel? tmpShop = await shopService.select(
+        number: tmpShopNumber,
+        password: tmpShopPassword,
+      );
+      if (tmpShop == null) {
         _status = AuthStatus.unauthenticated;
       } else {
+        _shop = tmpShop;
         _status = AuthStatus.authenticated;
       }
     }
