@@ -17,6 +17,8 @@ class AuthProvider with ChangeNotifier {
   FirebaseAuth? auth;
   User? _authUser;
   ShopService shopService = ShopService();
+  ShopModel? _shop;
+  ShopModel? get shop => _shop;
 
   TextEditingController number = TextEditingController();
   TextEditingController password = TextEditingController();
@@ -36,16 +38,12 @@ class AuthProvider with ChangeNotifier {
       _status = AuthStatus.authenticating;
       notifyListeners();
       await auth?.signInAnonymously().then((value) async {
-        ShopModel? shop = await shopService.select(
+        ShopModel? tmpShop = await shopService.select(
           number: number.text,
           password: password.text,
         );
-        if (shop != null) {
-          await setPrefsString('shopId', shop.id);
-          await setPrefsString('shopNumber', shop.number);
-          await setPrefsString('shopName', shop.name);
-          await setPrefsString('shopInvoiceName', shop.invoiceName);
-          await setPrefsString('shopPassword', shop.password);
+        if (tmpShop != null) {
+          _shop = tmpShop;
         } else {
           await auth?.signOut();
           error = 'ログインに失敗しました';
