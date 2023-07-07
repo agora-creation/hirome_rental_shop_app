@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hirome_rental_shop_app/common/style.dart';
-import 'package:hirome_rental_shop_app/widgets/custom_text_button.dart';
+import 'package:hirome_rental_shop_app/widgets/custom_sm_button.dart';
+import 'package:hirome_rental_shop_app/widgets/date_range_field.dart';
 import 'package:hirome_rental_shop_app/widgets/history_list_tile.dart';
 import 'package:hirome_rental_shop_app/widgets/order_product_widget.dart';
 
@@ -15,18 +16,22 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
       child: Card(
         elevation: 5,
         child: Column(
           children: [
-            ListTile(
-              title: const Text(
-                '期間で検索',
-                style: TextStyle(color: kGreyColor),
-              ),
-              trailing: const Icon(Icons.date_range, color: kGreyColor),
-              onTap: () {},
+            DateRangeField(
+              label: '2023/07/01～2023/07/31',
+              onTap: () async {
+                var selected = await showDateRangePicker(
+                  context: context,
+                  firstDate: DateTime(2023, 07, 01),
+                  lastDate: DateTime(2023, 07, 31),
+                  saveText: '検索',
+                );
+                print(selected);
+              },
             ),
             const Divider(height: 0, color: kGreyColor),
             Expanded(
@@ -79,7 +84,7 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
               fontSize: 14,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 8),
           const Text(
             '注文した食器 : ',
             style: TextStyle(
@@ -99,22 +104,11 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
             ],
           ),
           const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              CustomTextButton(
-                labelText: 'キャンセルする',
-                labelColor: kWhiteColor,
-                backgroundColor: kOrangeColor,
-                onPressed: () {},
-              ),
-              CustomTextButton(
-                labelText: '再注文する',
-                labelColor: kWhiteColor,
-                backgroundColor: kBlueColor,
-                onPressed: () {},
-              ),
-            ],
+          CustomSmButton(
+            label: '再注文する',
+            labelColor: kWhiteColor,
+            backgroundColor: kBlueColor,
+            onPressed: () {},
           ),
         ],
       ),

@@ -35,7 +35,13 @@ class HistoryListTile extends StatelessWidget {
               fontSize: 14,
             ),
           ),
-          trailing: Chip(label: Text('配達完了')),
+          trailing: Chip(
+            backgroundColor: kRedColor,
+            label: Text(
+              '受注待ち',
+              style: TextStyle(color: kWhiteColor),
+            ),
+          ),
         ),
       ),
     );

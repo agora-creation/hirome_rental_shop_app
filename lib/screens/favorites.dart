@@ -1,0 +1,48 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:hirome_rental_shop_app/common/style.dart';
+
+class FavoritesScreen extends StatefulWidget {
+  const FavoritesScreen({super.key});
+
+  @override
+  State<FavoritesScreen> createState() => _FavoritesScreenState();
+}
+
+class _FavoritesScreenState extends State<FavoritesScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: kWhiteColor,
+      appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        backgroundColor: kWhiteColor,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.chevron_left,
+            color: kBlackColor,
+            size: 32.0,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          '珍味堂 : お気に入り設定',
+          style: TextStyle(color: kBlackColor),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {},
+            child: const Text('保存'),
+          ),
+        ],
+      ),
+      body: const Padding(
+        padding: EdgeInsets.all(8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [],
+        ),
+      ),
+    );
+  }
+}

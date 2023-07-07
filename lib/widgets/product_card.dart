@@ -16,7 +16,7 @@ class ProductCard extends StatelessWidget {
       child: Card(
         elevation: 5,
         child: Container(
-          height: 400,
+          height: 500,
           margin: const EdgeInsets.all(4),
           padding: const EdgeInsets.all(4),
           child: Stack(
@@ -40,14 +40,14 @@ class ProductCard extends StatelessWidget {
                           '食器No. 2',
                           style: TextStyle(
                             color: kGreyColor,
-                            fontSize: 10,
+                            fontSize: 12,
                           ),
                         ),
                         Text(
                           '醤油皿',
                           style: TextStyle(
                             color: kBlackColor,
-                            fontSize: 16,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

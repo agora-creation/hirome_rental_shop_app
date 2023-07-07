@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hirome_rental_shop_app/common/style.dart';
-import 'package:hirome_rental_shop_app/screens/home.dart';
+import 'package:hirome_rental_shop_app/screens/login.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       locale: const Locale('ja'),
       title: 'ひそひそ -SECRET TALK-',
       theme: customTheme(),
-      home: const HomeScreen(),
+      home: const LoginScreen(),
     );
   }
 }

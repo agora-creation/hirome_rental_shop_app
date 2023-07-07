@@ -62,7 +62,7 @@ ThemeData customTheme() {
 const SliverGridDelegate kProductGrid =
     SliverGridDelegateWithFixedCrossAxisCount(
   crossAxisCount: 2,
-  childAspectRatio: 1,
+  childAspectRatio: 0.9,
   crossAxisSpacing: 4,
   mainAxisSpacing: 4,
 );

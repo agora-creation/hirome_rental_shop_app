@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:hirome_rental_shop_app/common/style.dart';
 
-class AddCartButton extends StatelessWidget {
+class CustomLgButton extends StatelessWidget {
+  final String label;
+  final Color labelColor;
+  final Color backgroundColor;
   final Function()? onPressed;
 
-  const AddCartButton({
+  const CustomLgButton({
+    required this.label,
+    required this.labelColor,
+    required this.backgroundColor,
     this.onPressed,
     super.key,
   });
@@ -16,14 +21,14 @@ class AddCartButton extends StatelessWidget {
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
-          backgroundColor: kBlueColor,
+          backgroundColor: backgroundColor,
           shape: const StadiumBorder(),
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(12),
         ),
-        child: const Text(
-          'カートに追加する',
+        child: Text(
+          label,
           style: TextStyle(
-            color: kWhiteColor,
+            color: labelColor,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hirome_rental_shop_app/common/style.dart';
-import 'package:hirome_rental_shop_app/widgets/add_cart_button.dart';
+import 'package:hirome_rental_shop_app/widgets/custom_lg_button.dart';
 import 'package:hirome_rental_shop_app/widgets/product_card.dart';
 import 'package:hirome_rental_shop_app/widgets/quantity_button.dart';
 
@@ -75,7 +75,10 @@ class _ProductDetailsDialogState extends State<ProductDetailsDialog> {
             onAdded: () {},
           ),
           const SizedBox(height: 8),
-          AddCartButton(
+          CustomLgButton(
+            label: 'カートに入れる',
+            labelColor: kWhiteColor,
+            backgroundColor: kBlueColor,
             onPressed: () {},
           ),
           const SizedBox(height: 8),

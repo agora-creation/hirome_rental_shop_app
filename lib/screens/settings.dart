@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hirome_rental_shop_app/common/functions.dart';
 import 'package:hirome_rental_shop_app/common/style.dart';
+import 'package:hirome_rental_shop_app/screens/favorites.dart';
+import 'package:hirome_rental_shop_app/screens/login.dart';
+import 'package:hirome_rental_shop_app/screens/password.dart';
 import 'package:hirome_rental_shop_app/widgets/link_text.dart';
 import 'package:hirome_rental_shop_app/widgets/setting_list_tile.dart';
 
@@ -32,7 +36,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
+        padding: const EdgeInsets.all(8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -40,19 +44,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
               iconData: Icons.key,
               label: 'パスワード変更',
               topBorder: true,
-              onTap: () {},
+              onTap: () => pushScreen(context, const PasswordScreen()),
             ),
             SettingListTile(
               iconData: Icons.favorite,
               label: 'お気に入り設定',
-              onTap: () {},
+              onTap: () => pushScreen(context, const FavoritesScreen()),
             ),
             const SizedBox(height: 24),
             Center(
               child: LinkText(
                 label: 'ログアウト',
                 labelColor: kRedColor,
-                onTap: () {},
+                onTap: () {
+                  pushReplacementScreen(context, const LoginScreen());
+                },
               ),
             ),
           ],
