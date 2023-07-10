@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hirome_rental_shop_app/common/style.dart';
+import 'package:hirome_rental_shop_app/models/product.dart';
+import 'package:hirome_rental_shop_app/services/product.dart';
 import 'package:hirome_rental_shop_app/widgets/custom_lg_button.dart';
 import 'package:hirome_rental_shop_app/widgets/product_card.dart';
 import 'package:hirome_rental_shop_app/widgets/quantity_button.dart';
@@ -12,22 +15,35 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
+  ProductService productService = ProductService();
+
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: kProductGrid,
-      shrinkWrap: true,
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      itemCount: 30,
-      itemBuilder: (context, index) {
-        return ProductCard(
-          onTap: () => showDialog(
-            context: context,
-            builder: (context) => const ProductDetailsDialog(),
-          ),
-        );
-      },
-    );
+    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: productService.streamList(),
+        builder: (context, snapshot) {
+          List<ProductModel> products = [];
+          if (snapshot.hasData) {
+            for (DocumentSnapshot<Map<String, dynamic>> doc
+                in snapshot.data!.docs) {
+              products.add(ProductModel.fromSnapshot(doc));
+            }
+          }
+          return GridView.builder(
+            gridDelegate: kProductGrid,
+            shrinkWrap: true,
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              return ProductCard(
+                onTap: () => showDialog(
+                  context: context,
+                  builder: (context) => const ProductDetailsDialog(),
+                ),
+              );
+            },
+          );
+        });
   }
 }
 
