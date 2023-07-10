@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hirome_rental_shop_app/common/style.dart';
+import 'package:hirome_rental_shop_app/providers/auth.dart';
 
 class FavoritesScreen extends StatefulWidget {
-  const FavoritesScreen({super.key});
+  final AuthProvider authProvider;
+
+  const FavoritesScreen({
+    required this.authProvider,
+    super.key,
+  });
 
   @override
   State<FavoritesScreen> createState() => _FavoritesScreenState();
@@ -25,9 +31,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           ),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          '珍味堂 : お気に入り設定',
-          style: TextStyle(color: kBlackColor),
+        title: Text(
+          '${widget.authProvider.shop?.name} : お気に入り設定',
+          style: const TextStyle(color: kBlackColor),
         ),
         actions: [
           TextButton(

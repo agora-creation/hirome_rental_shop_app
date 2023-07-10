@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hirome_rental_shop_app/common/functions.dart';
 import 'package:hirome_rental_shop_app/common/style.dart';
+import 'package:hirome_rental_shop_app/providers/auth.dart';
 import 'package:hirome_rental_shop_app/screens/history.dart';
 import 'package:hirome_rental_shop_app/screens/order.dart';
 import 'package:hirome_rental_shop_app/screens/order_cart.dart';
 import 'package:hirome_rental_shop_app/screens/settings.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,10 +22,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('珍味堂 : ${bodyTitle[currentIndex]}'),
+        title: Text('${authProvider.shop?.name} : ${bodyTitle[currentIndex]}'),
         actions: [
           IconButton(
             onPressed: () => showBottomUpScreen(

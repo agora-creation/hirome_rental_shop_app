@@ -5,6 +5,10 @@ class ShopService {
   String collection = 'shop';
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  void update(Map<String, dynamic> values) {
+    firestore.collection(collection).doc(values['id']).update(values);
+  }
+
   Future<ShopModel?> select({String? number, String? password}) async {
     ShopModel? ret;
     await firestore

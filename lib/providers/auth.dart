@@ -59,6 +59,19 @@ class AuthProvider with ChangeNotifier {
     return error;
   }
 
+  Future<String?> updatePassword(String newPassword) async {
+    String? error;
+    try {
+      shopService.update({
+        'id': shop?.id,
+        'password': newPassword,
+      });
+    } catch (e) {
+      error = 'パスワード変更に失敗しました';
+    }
+    return error;
+  }
+
   Future signOut() async {
     await auth?.signOut();
     _status = AuthStatus.unauthenticated;

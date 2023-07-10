@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hirome_rental_shop_app/common/style.dart';
+import 'package:hirome_rental_shop_app/providers/auth.dart';
 import 'package:hirome_rental_shop_app/widgets/custom_text_form_field.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class PasswordScreen extends StatefulWidget {
-  const PasswordScreen({super.key});
+  final AuthProvider authProvider;
+
+  const PasswordScreen({
+    required this.authProvider,
+    super.key,
+  });
 
   @override
   State<PasswordScreen> createState() => _PasswordScreenState();
 }
 
 class _PasswordScreenState extends State<PasswordScreen> {
+  TextEditingController newPassword = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,13 +36,28 @@ class _PasswordScreenState extends State<PasswordScreen> {
           ),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
-          '珍味堂 : パスワード変更',
-          style: TextStyle(color: kBlackColor),
+        title: Text(
+          '${widget.authProvider.shop?.name} : パスワード変更',
+          style: const TextStyle(color: kBlackColor),
         ),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () async {
+              String? error = await widget.authProvider.updatePassword(
+                newPassword.text,
+              );
+              if (error != null) {
+                if (!mounted) return;
+                showTopSnackBar(
+                  Overlay.of(context),
+                  CustomSnackBar.error(message: error),
+                  snackBarPosition: SnackBarPosition.bottom,
+                );
+                return;
+              }
+              if (!mounted) return;
+              Navigator.pop(context);
+            },
             child: const Text('保存'),
           ),
         ],
@@ -43,7 +68,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomTextFormField(
-              controller: TextEditingController(),
+              controller: newPassword,
               label: '新しいパスワード',
               color: kBlackColor,
               prefix: Icons.key,
