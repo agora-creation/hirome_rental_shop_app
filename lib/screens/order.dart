@@ -8,6 +8,7 @@ import 'package:hirome_rental_shop_app/services/cart.dart';
 import 'package:hirome_rental_shop_app/services/product.dart';
 import 'package:hirome_rental_shop_app/widgets/custom_image.dart';
 import 'package:hirome_rental_shop_app/widgets/custom_lg_button.dart';
+import 'package:hirome_rental_shop_app/widgets/link_text.dart';
 import 'package:hirome_rental_shop_app/widgets/product_card.dart';
 import 'package:hirome_rental_shop_app/widgets/quantity_button.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +25,7 @@ class _OrderScreenState extends State<OrderScreen> {
   ProductService productService = ProductService();
   List<CartModel> carts = [];
 
-  void _getCart() async {
+  void _init() async {
     List<CartModel> tmpCarts = await cartService.get();
     setState(() {
       carts = tmpCarts;
@@ -34,7 +35,7 @@ class _OrderScreenState extends State<OrderScreen> {
   @override
   void initState() {
     super.initState();
-    _getCart();
+    _init();
   }
 
   @override
@@ -78,7 +79,7 @@ class _OrderScreenState extends State<OrderScreen> {
                 context: context,
                 builder: (context) => ProductDetailsDialog(product: product),
               ).then((value) {
-                _getCart();
+                _init();
               }),
             );
           },
@@ -103,6 +104,7 @@ class ProductDetailsDialog extends StatefulWidget {
 class _ProductDetailsDialogState extends State<ProductDetailsDialog> {
   CartService cartService = CartService();
   int requestQuantity = 1;
+  bool isCart = false;
 
   void _init() async {
     List<CartModel> carts = await cartService.get();
@@ -110,6 +112,7 @@ class _ProductDetailsDialogState extends State<ProductDetailsDialog> {
     for (CartModel cart in carts) {
       if (cart.number == widget.product.number) {
         tmpRequestQuantity = cart.requestQuantity;
+        isCart = true;
       }
     }
     setState(() {
@@ -169,7 +172,7 @@ class _ProductDetailsDialogState extends State<ProductDetailsDialog> {
           ),
           const SizedBox(height: 8),
           CustomLgButton(
-            label: 'カートに入れる',
+            label: isCart ? '数量を変更する' : 'カートに入れる',
             labelColor: kWhiteColor,
             backgroundColor: kBlueColor,
             onPressed: () async {
@@ -180,6 +183,12 @@ class _ProductDetailsDialogState extends State<ProductDetailsDialog> {
               if (!mounted) return;
               Navigator.pop(context);
             },
+          ),
+          const SizedBox(height: 16),
+          LinkText(
+            label: 'カートから削除する',
+            labelColor: kRedColor,
+            onTap: () {},
           ),
           const SizedBox(height: 8),
         ],
