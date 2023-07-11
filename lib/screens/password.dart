@@ -56,7 +56,11 @@ class _PasswordScreenState extends State<PasswordScreen> {
                 return;
               }
               if (!mounted) return;
-              Navigator.pop(context);
+              showTopSnackBar(
+                Overlay.of(context),
+                const CustomSnackBar.success(message: 'パスワードを変更しました'),
+                snackBarPosition: SnackBarPosition.bottom,
+              );
             },
             child: const Text('保存'),
           ),
@@ -69,6 +73,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
           children: [
             CustomTextFormField(
               controller: newPassword,
+              maxLines: 1,
               label: '新しいパスワード',
               color: kBlackColor,
               prefix: Icons.key,

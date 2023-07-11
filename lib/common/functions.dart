@@ -62,6 +62,16 @@ Future setPrefsBool(String key, bool value) async {
   prefs.setBool(key, value);
 }
 
+Future<List<String>?> getPrefsList(String key) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getStringList(key);
+}
+
+Future setPrefsList(String key, List<String> value) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setStringList(key, value);
+}
+
 Future removePrefs(String key) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.remove(key);
