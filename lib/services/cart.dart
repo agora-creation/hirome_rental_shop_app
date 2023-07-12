@@ -33,6 +33,7 @@ class CartService {
         'invoiceNumber': product.invoiceNumber,
         'price': product.price,
         'unit': product.unit,
+        'category': product.category,
         'requestQuantity': requestQuantity,
         'deliveryQuantity': requestQuantity,
       }));

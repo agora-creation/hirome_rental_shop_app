@@ -5,6 +5,7 @@ class CartModel {
   String invoiceNumber = '';
   int price = 0;
   String unit = '';
+  int category = 0;
   int requestQuantity = 0;
   int deliveryQuantity = 0;
 
@@ -15,6 +16,7 @@ class CartModel {
     invoiceNumber = map['invoiceNumber'] ?? '';
     price = map['price'] ?? 0;
     unit = map['unit'] ?? '';
+    category = map['category'] ?? 0;
     requestQuantity = map['requestQuantity'] ?? 0;
     deliveryQuantity = map['deliveryQuantity'] ?? 0;
   }
@@ -26,6 +28,7 @@ class CartModel {
         'invoiceNumber': invoiceNumber,
         'price': price,
         'unit': unit,
+        'category': category,
         'requestQuantity': requestQuantity,
         'deliveryQuantity': deliveryQuantity,
       };

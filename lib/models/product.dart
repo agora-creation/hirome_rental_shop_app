@@ -11,8 +11,8 @@ class ProductModel {
   int _price = 0;
   String _unit = '';
   String _image = '';
-  int _priority = 0;
   int _category = 0;
+  int _priority = 0;
   bool _display = false;
   DateTime _createdAt = DateTime.now();
 
@@ -23,8 +23,8 @@ class ProductModel {
   int get price => _price;
   String get unit => _unit;
   String get image => _image;
-  int get priority => _priority;
   int get category => _category;
+  int get priority => _priority;
   bool get display => _display;
   DateTime get createdAt => _createdAt;
 
@@ -37,8 +37,8 @@ class ProductModel {
     _price = map['price'] ?? 0;
     _unit = map['unit'] ?? '';
     _image = map['image'] ?? '';
-    _priority = map['priority'] ?? 0;
     _category = map['category'] ?? 0;
+    _priority = map['priority'] ?? 0;
     _display = map['display'] ?? false;
     _createdAt = map['createdAt'].toDate() ?? DateTime.now();
   }
