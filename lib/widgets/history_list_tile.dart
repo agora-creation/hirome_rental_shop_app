@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:hirome_rental_shop_app/common/functions.dart';
 import 'package:hirome_rental_shop_app/common/style.dart';
+import 'package:hirome_rental_shop_app/models/order.dart';
 
 class HistoryListTile extends StatelessWidget {
+  final OrderModel order;
   final Function()? onTap;
 
   const HistoryListTile({
+    required this.order,
     this.onTap,
     super.key,
   });
@@ -18,10 +22,10 @@ class HistoryListTile extends StatelessWidget {
         decoration: const BoxDecoration(
           border: Border(bottom: BorderSide(color: kGreyColor)),
         ),
-        child: const ListTile(
+        child: ListTile(
           title: Text(
-            '醤油皿...他5点',
-            style: TextStyle(
+            order.cartText(),
+            style: const TextStyle(
               color: kBlackColor,
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -29,19 +33,13 @@ class HistoryListTile extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
           subtitle: Text(
-            '注文日時 : 2023/07/06 15:44',
-            style: TextStyle(
+            '注文日時 : ${dateText('yyyy/MM/dd HH:mm', order.createdAt)}',
+            style: const TextStyle(
               color: kGreyColor,
               fontSize: 14,
             ),
           ),
-          trailing: Chip(
-            backgroundColor: kRedColor,
-            label: Text(
-              '受注待ち',
-              style: TextStyle(color: kWhiteColor),
-            ),
-          ),
+          trailing: order.statusChip(),
         ),
       ),
     );

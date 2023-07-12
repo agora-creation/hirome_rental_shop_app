@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hirome_rental_shop_app/models/order.dart';
+import 'package:hirome_rental_shop_app/common/functions.dart';
+import 'package:hirome_rental_shop_app/models/shop.dart';
 
 class OrderService {
   String collection = 'order';
@@ -17,21 +18,17 @@ class OrderService {
     firestore.collection(collection).doc(values['id']).update(values);
   }
 
-  void delete(Map<String, dynamic> values) {
-    firestore.collection(collection).doc(values['id']).delete();
-  }
-
-  Future<List<OrderModel>> selectList() async {
-    List<OrderModel> ret = [];
-    await firestore
+  Stream<QuerySnapshot<Map<String, dynamic>>>? streamList({
+    required ShopModel shop,
+    required DateTime searchStart,
+    required DateTime searchEnd,
+  }) {
+    Timestamp startAt = convertTimestamp(searchStart, false);
+    Timestamp endAt = convertTimestamp(searchEnd, true);
+    return FirebaseFirestore.instance
         .collection(collection)
+        .where('shopNumber', isEqualTo: shop.number)
         .orderBy('createdAt', descending: true)
-        .get()
-        .then((value) {
-      for (DocumentSnapshot<Map<String, dynamic>> map in value.docs) {
-        ret.add(OrderModel.fromSnapshot(map));
-      }
-    });
-    return ret;
+        .startAt([endAt]).endAt([startAt]).snapshots();
   }
 }

@@ -7,8 +7,6 @@ import 'package:hirome_rental_shop_app/widgets/custom_lg_button.dart';
 import 'package:hirome_rental_shop_app/widgets/custom_text_form_field.dart';
 import 'package:hirome_rental_shop_app/widgets/login_title.dart';
 import 'package:provider/provider.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -64,11 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           String? error = await authProvider.signIn();
                           if (error != null) {
                             if (!mounted) return;
-                            showTopSnackBar(
-                              Overlay.of(context),
-                              CustomSnackBar.error(message: error),
-                              snackBarPosition: SnackBarPosition.bottom,
-                            );
+                            showMessage(context, error, false);
                             return;
                           }
                           authProvider.clearController();

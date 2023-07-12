@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hirome_rental_shop_app/common/functions.dart';
 import 'package:hirome_rental_shop_app/common/style.dart';
 import 'package:hirome_rental_shop_app/providers/auth.dart';
 import 'package:hirome_rental_shop_app/widgets/custom_text_form_field.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class PasswordScreen extends StatefulWidget {
   final AuthProvider authProvider;
@@ -48,19 +47,11 @@ class _PasswordScreenState extends State<PasswordScreen> {
               );
               if (error != null) {
                 if (!mounted) return;
-                showTopSnackBar(
-                  Overlay.of(context),
-                  CustomSnackBar.error(message: error),
-                  snackBarPosition: SnackBarPosition.bottom,
-                );
+                showMessage(context, error, false);
                 return;
               }
               if (!mounted) return;
-              showTopSnackBar(
-                Overlay.of(context),
-                const CustomSnackBar.success(message: 'パスワードを変更しました'),
-                snackBarPosition: SnackBarPosition.bottom,
-              );
+              showMessage(context, 'パスワードを変更しました', true);
             },
             child: const Text('保存'),
           ),

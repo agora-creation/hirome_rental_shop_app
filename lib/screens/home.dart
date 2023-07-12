@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hirome_rental_shop_app/common/functions.dart';
 import 'package:hirome_rental_shop_app/common/style.dart';
-import 'package:hirome_rental_shop_app/models/cart.dart';
 import 'package:hirome_rental_shop_app/providers/auth.dart';
 import 'package:hirome_rental_shop_app/screens/history.dart';
 import 'package:hirome_rental_shop_app/screens/order.dart';
 import 'package:hirome_rental_shop_app/screens/order_cart.dart';
 import 'package:hirome_rental_shop_app/screens/settings.dart';
-import 'package:hirome_rental_shop_app/services/cart.dart';
 import 'package:hirome_rental_shop_app/widgets/cart_next_button.dart';
 import 'package:provider/provider.dart';
 
@@ -19,33 +17,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  CartService cartService = CartService();
-  List<CartModel> carts = [];
   int currentIndex = 0;
-  List<Widget> body = [const OrderScreen(), const HistoryScreen()];
-  List<String> bodyTitle = ['注文', '注文履歴'];
-
-  void _getCart() async {
-    List<CartModel> tmpCarts = await cartService.get();
-    setState(() {
-      carts = tmpCarts;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _getCart();
-  }
 
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
+    List<Widget> bodyWidgets = [
+      OrderScreen(authProvider: authProvider),
+      HistoryScreen(authProvider: authProvider),
+    ];
+    List<String> bodyTitles = ['注文', '注文履歴'];
 
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('${authProvider.shop?.name} : ${bodyTitle[currentIndex]}'),
+        title: Text('${authProvider.shop?.name} : ${bodyTitles[currentIndex]}'),
         actions: [
           IconButton(
             onPressed: () => showBottomUpScreen(
@@ -56,10 +42,10 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: body[currentIndex],
+      body: bodyWidgets[currentIndex],
       floatingActionButton: CartNextButton(
         currentIndex: currentIndex,
-        carts: carts,
+        carts: authProvider.carts,
         onPressed: () => showBottomUpScreen(
           context,
           const OrderCartScreen(),
@@ -82,11 +68,11 @@ class _HomeScreenState extends State<HomeScreen> {
           items: [
             BottomNavigationBarItem(
               icon: const Icon(Icons.flatware),
-              label: bodyTitle[0],
+              label: bodyTitles[0],
             ),
             BottomNavigationBarItem(
               icon: const Icon(Icons.list),
-              label: bodyTitle[1],
+              label: bodyTitles[1],
             ),
           ],
           type: BottomNavigationBarType.fixed,

@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hirome_rental_shop_app/common/functions.dart';
+import 'package:hirome_rental_shop_app/models/cart.dart';
+import 'package:hirome_rental_shop_app/models/product.dart';
 import 'package:hirome_rental_shop_app/models/shop.dart';
+import 'package:hirome_rental_shop_app/services/cart.dart';
 import 'package:hirome_rental_shop_app/services/shop.dart';
 
 enum AuthStatus {
@@ -16,9 +19,12 @@ class AuthProvider with ChangeNotifier {
   AuthStatus get status => _status;
   FirebaseAuth? auth;
   User? _authUser;
+  CartService cartService = CartService();
   ShopService shopService = ShopService();
   ShopModel? _shop;
+  List<CartModel> _carts = [];
   ShopModel? get shop => _shop;
+  List<CartModel> get carts => _carts;
 
   TextEditingController number = TextEditingController();
   TextEditingController password = TextEditingController();
@@ -108,9 +114,27 @@ class AuthProvider with ChangeNotifier {
         _status = AuthStatus.unauthenticated;
       } else {
         _shop = tmpShop;
+        await initCarts();
         _status = AuthStatus.authenticated;
       }
     }
     notifyListeners();
+  }
+
+  Future initCarts() async {
+    _carts = await cartService.get();
+    notifyListeners();
+  }
+
+  Future addCarts(ProductModel product, int requestQuantity) async {
+    await cartService.add(product, requestQuantity);
+  }
+
+  Future removeCart(CartModel cart) async {
+    await cartService.remove(cart);
+  }
+
+  Future clearCart() async {
+    await cartService.clear();
   }
 }

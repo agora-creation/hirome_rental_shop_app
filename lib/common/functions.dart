@@ -1,9 +1,12 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 void pushScreen(BuildContext context, Widget widget) {
   Navigator.push(
@@ -102,4 +105,24 @@ String rndText(int length) {
     },
   );
   return String.fromCharCodes(codeUnits);
+}
+
+void showMessage(BuildContext context, String message, bool success) {
+  showTopSnackBar(
+    Overlay.of(context),
+    success
+        ? CustomSnackBar.success(message: message)
+        : CustomSnackBar.error(message: message),
+    snackBarPosition: SnackBarPosition.bottom,
+  );
+}
+
+Timestamp convertTimestamp(DateTime date, bool end) {
+  String dateTime = '${dateText('yyyy-MM-dd', date)} 00:00:00.000';
+  if (end == true) {
+    dateTime = '${dateText('yyyy-MM-dd', date)} 23:59:59.999';
+  }
+  return Timestamp.fromMillisecondsSinceEpoch(
+    DateTime.parse(dateTime).millisecondsSinceEpoch,
+  );
 }

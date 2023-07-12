@@ -66,3 +66,6 @@ const SliverGridDelegate kProductGrid =
   crossAxisSpacing: 4,
   mainAxisSpacing: 4,
 );
+
+DateTime kSearchFirstDate = DateTime(2023, 1, 1);
+DateTime kSearchLastDate = DateTime(2100, 12, 31);

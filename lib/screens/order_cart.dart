@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hirome_rental_shop_app/common/functions.dart';
 import 'package:hirome_rental_shop_app/common/style.dart';
+import 'package:hirome_rental_shop_app/models/cart.dart';
+import 'package:hirome_rental_shop_app/providers/auth.dart';
+import 'package:hirome_rental_shop_app/providers/order.dart';
+import 'package:hirome_rental_shop_app/widgets/cart_list.dart';
 import 'package:hirome_rental_shop_app/widgets/custom_lg_button.dart';
-import 'package:hirome_rental_shop_app/widgets/order_product_widget.dart';
+import 'package:hirome_rental_shop_app/widgets/link_text.dart';
+import 'package:provider/provider.dart';
 
 class OrderCartScreen extends StatefulWidget {
   const OrderCartScreen({super.key});
@@ -14,6 +20,9 @@ class OrderCartScreen extends StatefulWidget {
 class _OrderCartScreenState extends State<OrderCartScreen> {
   @override
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+    final orderProvider = Provider.of<OrderProvider>(context);
+
     return Scaffold(
       backgroundColor: kWhiteColor,
       appBar: AppBar(
@@ -21,9 +30,9 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
         automaticallyImplyLeading: false,
         backgroundColor: kWhiteColor,
         centerTitle: true,
-        title: const Text(
-          '珍味堂 : 注文確認',
-          style: TextStyle(color: kBlackColor),
+        title: Text(
+          '${authProvider.shop?.name} : 注文確認',
+          style: const TextStyle(color: kBlackColor),
         ),
         actions: [
           IconButton(
@@ -33,25 +42,62 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              '注文の内容を確認してください。\n間違いなければ『注文する』ボタンを押してください。',
-              style: TextStyle(color: kRedColor),
+              '注文の内容を確認してください\n間違いなければ『注文する』ボタンを押してください',
+              style: TextStyle(
+                color: kRedColor,
+                fontSize: 14,
+              ),
             ),
             const SizedBox(height: 16),
-            const Text('注文する食器'),
-            const OrderProductWidget(),
-            const OrderProductWidget(),
-            const OrderProductWidget(),
+            const Text('注文する商品'),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: authProvider.carts.length,
+              itemBuilder: (context, index) {
+                CartModel cart = authProvider.carts[index];
+                return CartList(cart: cart);
+              },
+            ),
             const SizedBox(height: 24),
             CustomLgButton(
               label: '注文する',
               labelColor: kWhiteColor,
               backgroundColor: kBlueColor,
-              onPressed: () {},
+              onPressed: () async {
+                String? error = await orderProvider.create(
+                  shop: authProvider.shop,
+                  carts: authProvider.carts,
+                );
+                if (error != null) {
+                  if (!mounted) return;
+                  showMessage(context, error, false);
+                  return;
+                }
+                await authProvider.clearCart();
+                await authProvider.initCarts();
+                if (!mounted) return;
+                showMessage(context, '注文に成功しました', true);
+                Navigator.of(context, rootNavigator: true).pop();
+              },
+            ),
+            const SizedBox(height: 24),
+            Center(
+              child: LinkText(
+                label: 'カートを空にする',
+                labelColor: kRedColor,
+                onTap: () async {
+                  await authProvider.clearCart();
+                  await authProvider.initCarts();
+                  if (!mounted) return;
+                  showMessage(context, 'カートを空にしました', true);
+                  Navigator.of(context, rootNavigator: true).pop();
+                },
+              ),
             ),
           ],
         ),

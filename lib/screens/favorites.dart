@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hirome_rental_shop_app/common/functions.dart';
 import 'package:hirome_rental_shop_app/common/style.dart';
 import 'package:hirome_rental_shop_app/models/product.dart';
 import 'package:hirome_rental_shop_app/providers/auth.dart';
 import 'package:hirome_rental_shop_app/services/product.dart';
 import 'package:hirome_rental_shop_app/widgets/product_checkbox_list_tile.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class FavoritesScreen extends StatefulWidget {
   final AuthProvider authProvider;
@@ -64,56 +63,66 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               );
               if (error != null) {
                 if (!mounted) return;
-                showTopSnackBar(
-                  Overlay.of(context),
-                  CustomSnackBar.error(message: error),
-                  snackBarPosition: SnackBarPosition.bottom,
-                );
+                showMessage(context, error, false);
                 return;
               }
               if (!mounted) return;
-              showTopSnackBar(
-                Overlay.of(context),
-                const CustomSnackBar.success(message: 'お気に入り設定を変更しました'),
-                snackBarPosition: SnackBarPosition.bottom,
-              );
+              showMessage(context, 'お気に入り設定を変更しました', true);
             },
             child: const Text('保存'),
           ),
         ],
       ),
-      body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-          stream: productService.streamList(),
-          builder: (context, snapshot) {
-            List<ProductModel> products = [];
-            if (snapshot.hasData) {
-              for (DocumentSnapshot<Map<String, dynamic>> doc
-                  in snapshot.data!.docs) {
-                products.add(ProductModel.fromSnapshot(doc));
-              }
-            }
-            return ListView.builder(
-              shrinkWrap: true,
-              itemCount: products.length,
-              itemBuilder: (context, index) {
-                ProductModel product = products[index];
-                var contain = favorites.where((e) => e == product.number);
-                return ProductCheckboxListTile(
-                  product: product,
-                  value: contain.isNotEmpty,
-                  onChanged: (value) {
-                    setState(() {
-                      if (contain.isEmpty) {
-                        favorites.add(product.number);
-                      } else {
-                        favorites.remove(product.number);
-                      }
-                    });
+      body: Column(
+        children: [
+          const Text(
+            'チェックをいれた商品が注文可能になります',
+            style: TextStyle(fontSize: 14),
+          ),
+          const SizedBox(height: 8),
+          const Divider(height: 1, color: kGreyColor),
+          Expanded(
+            child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              stream: productService.streamList(),
+              builder: (context, snapshot) {
+                List<ProductModel> products = [];
+                if (snapshot.hasData) {
+                  for (DocumentSnapshot<Map<String, dynamic>> doc
+                      in snapshot.data!.docs) {
+                    products.add(ProductModel.fromSnapshot(doc));
+                  }
+                }
+                if (products.isEmpty) {
+                  return const Center(
+                    child: Text('商品がありません'),
+                  );
+                }
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: products.length,
+                  itemBuilder: (context, index) {
+                    ProductModel product = products[index];
+                    var contain = favorites.where((e) => e == product.number);
+                    return ProductCheckboxListTile(
+                      product: product,
+                      value: contain.isNotEmpty,
+                      onChanged: (value) {
+                        setState(() {
+                          if (contain.isEmpty) {
+                            favorites.add(product.number);
+                          } else {
+                            favorites.remove(product.number);
+                          }
+                        });
+                      },
+                    );
                   },
                 );
               },
-            );
-          }),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

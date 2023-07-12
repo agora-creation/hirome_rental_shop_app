@@ -1,3 +1,6 @@
+//category
+//0=食器,1=雑品,9=洗浄
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductModel {
@@ -9,6 +12,7 @@ class ProductModel {
   String _unit = '';
   String _image = '';
   int _priority = 0;
+  int _category = 0;
   bool _display = false;
   DateTime _createdAt = DateTime.now();
 
@@ -20,6 +24,7 @@ class ProductModel {
   String get unit => _unit;
   String get image => _image;
   int get priority => _priority;
+  int get category => _category;
   bool get display => _display;
   DateTime get createdAt => _createdAt;
 
@@ -33,6 +38,7 @@ class ProductModel {
     _unit = map['unit'] ?? '';
     _image = map['image'] ?? '';
     _priority = map['priority'] ?? 0;
+    _category = map['category'] ?? 0;
     _display = map['display'] ?? false;
     _createdAt = map['createdAt'].toDate() ?? DateTime.now();
   }

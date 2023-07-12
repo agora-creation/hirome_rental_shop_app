@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:hirome_rental_shop_app/common/functions.dart';
 import 'package:hirome_rental_shop_app/common/style.dart';
 
 class DateRangeField extends StatelessWidget {
-  final String label;
+  final DateTime start;
+  final DateTime end;
   final Function()? onTap;
 
   const DateRangeField({
-    required this.label,
+    required this.start,
+    required this.end,
     this.onTap,
     super.key,
   });
@@ -15,7 +18,7 @@ class DateRangeField extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(
-        label,
+        '${dateText('yyyy/MM/dd', start)}～${dateText('yyyy/MM/dd', end)}',
         style: const TextStyle(color: kGreyColor),
       ),
       trailing: const Icon(Icons.date_range, color: kGreyColor),
