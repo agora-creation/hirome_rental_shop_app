@@ -32,7 +32,7 @@ class ShopModel {
     _password = map['password'] ?? '';
     favorites = _convertFavorites(map['favorites']);
     _priority = map['priority'] ?? 0;
-    _authority = map['priority'] ?? 0;
+    _authority = map['authority'] ?? 0;
     _createdAt = map['createdAt'].toDate() ?? DateTime.now();
   }
 
