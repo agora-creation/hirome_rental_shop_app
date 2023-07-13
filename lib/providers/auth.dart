@@ -4,8 +4,10 @@ import 'package:hirome_rental_shop_app/common/functions.dart';
 import 'package:hirome_rental_shop_app/models/cart.dart';
 import 'package:hirome_rental_shop_app/models/product.dart';
 import 'package:hirome_rental_shop_app/models/shop.dart';
+import 'package:hirome_rental_shop_app/models/shop_login.dart';
 import 'package:hirome_rental_shop_app/services/cart.dart';
 import 'package:hirome_rental_shop_app/services/shop.dart';
+import 'package:hirome_rental_shop_app/services/shop_login.dart';
 
 enum AuthStatus {
   authenticated,
@@ -21,9 +23,12 @@ class AuthProvider with ChangeNotifier {
   User? _authUser;
   CartService cartService = CartService();
   ShopService shopService = ShopService();
+  ShopLoginService shopLoginService = ShopLoginService();
   ShopModel? _shop;
+  ShopLoginModel? _shopLogin;
   List<CartModel> _carts = [];
   ShopModel? get shop => _shop;
+  ShopLoginModel? get shopLogin => _shopLogin;
   List<CartModel> get carts => _carts;
 
   TextEditingController number = TextEditingController();
@@ -50,6 +55,14 @@ class AuthProvider with ChangeNotifier {
         );
         if (tmpShop != null) {
           _shop = tmpShop;
+          shopLoginService.create({
+            'id': value.user?.uid,
+            'shopNumber': tmpShop.number,
+            'shopName': tmpShop.name,
+            'deviceName': '',
+            'accept': false,
+            'createdAt': DateTime.now(),
+          });
           await setPrefsString('shopNumber', tmpShop.number);
           await setPrefsString('shopPassword', tmpShop.password);
         } else {
@@ -114,6 +127,7 @@ class AuthProvider with ChangeNotifier {
         _status = AuthStatus.unauthenticated;
       } else {
         _shop = tmpShop;
+        _shopLogin = await shopLoginService.select(_authUser?.uid);
         await initCarts();
         _status = AuthStatus.authenticated;
       }

@@ -42,4 +42,20 @@ class ProductModel {
     _display = map['display'] ?? false;
     _createdAt = map['createdAt'].toDate() ?? DateTime.now();
   }
+
+  String categoryText() {
+    String ret = '';
+    switch (category) {
+      case 0:
+        ret = '食器';
+        break;
+      case 1:
+        ret = '雑品';
+        break;
+      case 9:
+        ret = '洗浄';
+        break;
+    }
+    return ret;
+  }
 }

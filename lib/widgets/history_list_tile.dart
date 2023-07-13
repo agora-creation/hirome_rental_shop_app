@@ -24,7 +24,7 @@ class HistoryListTile extends StatelessWidget {
         ),
         child: ListTile(
           title: Text(
-            order.cartText(),
+            order.cartsText(),
             style: const TextStyle(
               color: kBlackColor,
               fontSize: 18,
