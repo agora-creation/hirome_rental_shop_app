@@ -3,10 +3,14 @@ import 'package:hirome_rental_shop_app/common/functions.dart';
 import 'package:hirome_rental_shop_app/common/style.dart';
 import 'package:hirome_rental_shop_app/providers/auth.dart';
 import 'package:hirome_rental_shop_app/screens/history.dart';
+import 'package:hirome_rental_shop_app/screens/login.dart';
 import 'package:hirome_rental_shop_app/screens/order.dart';
 import 'package:hirome_rental_shop_app/screens/order_cart.dart';
 import 'package:hirome_rental_shop_app/screens/settings.dart';
 import 'package:hirome_rental_shop_app/widgets/cart_next_button.dart';
+import 'package:hirome_rental_shop_app/widgets/custom_bottom_navigation_bar.dart';
+import 'package:hirome_rental_shop_app/widgets/link_text.dart';
+import 'package:hirome_rental_shop_app/widgets/login_title.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -28,39 +32,32 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
     List<String> bodyTitles = ['注文', '注文履歴'];
 
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text('${authProvider.shop?.name} : ${bodyTitles[currentIndex]}'),
-        actions: [
-          IconButton(
-            onPressed: () => showBottomUpScreen(
-              context,
-              const SettingsScreen(),
-            ),
-            icon: const Icon(Icons.settings),
-          ),
-        ],
-      ),
-      body: bodyWidgets[currentIndex],
-      floatingActionButton: CartNextButton(
-        currentIndex: currentIndex,
-        carts: authProvider.carts,
-        onPressed: () => showBottomUpScreen(
-          context,
-          const OrderCartScreen(),
-        ),
-      ),
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: kGrey2Color,
-              blurRadius: 5,
+    if (authProvider.loginCheck()) {
+      return Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title:
+              Text('${authProvider.shop?.name} : ${bodyTitles[currentIndex]}'),
+          actions: [
+            IconButton(
+              onPressed: () => showBottomUpScreen(
+                context,
+                const SettingsScreen(),
+              ),
+              icon: const Icon(Icons.settings),
             ),
           ],
         ),
-        child: BottomNavigationBar(
+        body: bodyWidgets[currentIndex],
+        floatingActionButton: CartNextButton(
+          currentIndex: currentIndex,
+          carts: authProvider.carts,
+          onPressed: () => showBottomUpScreen(
+            context,
+            const OrderCartScreen(),
+          ),
+        ),
+        bottomNavigationBar: CustomBottomNavigationBar(
           currentIndex: currentIndex,
           onTap: (index) {
             setState(() => currentIndex = index);
@@ -75,9 +72,40 @@ class _HomeScreenState extends State<HomeScreen> {
               label: bodyTitles[1],
             ),
           ],
-          type: BottomNavigationBarType.fixed,
         ),
-      ),
-    );
+      );
+    } else {
+      return Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const LoginTitle(),
+                const Column(
+                  children: [
+                    Text(
+                      '管理者へログイン申請を送りました。\n承認まで今しばらくお待ちくださいませ。',
+                      style: TextStyle(color: kWhiteColor),
+                    ),
+                  ],
+                ),
+                LinkText(
+                  label: 'ログインへ戻る',
+                  labelColor: kWhiteColor,
+                  onTap: () async {
+                    await authProvider.signOut();
+                    authProvider.clearController();
+                    if (!mounted) return;
+                    pushReplacementScreen(context, const LoginScreen());
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
   }
 }

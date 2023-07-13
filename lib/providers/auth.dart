@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hirome_rental_shop_app/common/functions.dart';
@@ -55,11 +58,19 @@ class AuthProvider with ChangeNotifier {
         );
         if (tmpShop != null) {
           _shop = tmpShop;
+          final deviceInfoPlugin = DeviceInfoPlugin();
+          final deviceInfo = await deviceInfoPlugin.deviceInfo;
+          String deviceName = '';
+          if (Platform.isAndroid) {
+            deviceName = deviceInfo.data['device'];
+          } else if (Platform.isIOS) {
+            deviceName = deviceInfo.data['name'];
+          }
           shopLoginService.create({
             'id': value.user?.uid,
             'shopNumber': tmpShop.number,
             'shopName': tmpShop.name,
-            'deviceName': '',
+            'deviceName': deviceName,
             'accept': false,
             'createdAt': DateTime.now(),
           });
@@ -108,6 +119,9 @@ class AuthProvider with ChangeNotifier {
     await auth?.signOut();
     _status = AuthStatus.unauthenticated;
     await allRemovePrefs();
+    _shop = null;
+    _shopLogin = null;
+    _carts = [];
     notifyListeners();
     return Future.delayed(Duration.zero);
   }
@@ -133,6 +147,12 @@ class AuthProvider with ChangeNotifier {
       }
     }
     notifyListeners();
+  }
+
+  bool loginCheck() {
+    if (shopLogin == null) return false;
+    if (shopLogin?.accept == false) return false;
+    return true;
   }
 
   Future initCarts() async {
