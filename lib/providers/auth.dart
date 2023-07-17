@@ -155,6 +155,10 @@ class AuthProvider with ChangeNotifier {
     return true;
   }
 
+  Future reLoginCheck() async {
+    _shopLogin = await shopLoginService.select(_authUser?.uid);
+  }
+
   Future initCarts() async {
     _carts = await cartService.get();
     notifyListeners();

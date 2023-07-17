@@ -55,14 +55,19 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
             ),
             const SizedBox(height: 16),
             const Text('注文する商品'),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: authProvider.carts.length,
-              itemBuilder: (context, index) {
-                CartModel cart = authProvider.carts[index];
-                return CartList(cart: cart);
-              },
+            const Divider(height: 1, color: kGreyColor),
+            SizedBox(
+              height: 350,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: authProvider.carts.length,
+                itemBuilder: (context, index) {
+                  CartModel cart = authProvider.carts[index];
+                  return CartList(cart: cart);
+                },
+              ),
             ),
+            const Divider(height: 1, color: kGreyColor),
             const SizedBox(height: 24),
             CustomLgButton(
               label: '注文する',

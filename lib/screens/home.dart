@@ -76,6 +76,19 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     } else {
       return Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          actions: [
+            IconButton(
+              onPressed: () async {
+                await authProvider.reLoginCheck();
+                if (!mounted) return;
+                pushReplacementScreen(context, const HomeScreen());
+              },
+              icon: const Icon(Icons.refresh),
+            ),
+          ],
+        ),
         body: Padding(
           padding: const EdgeInsets.all(16),
           child: Center(

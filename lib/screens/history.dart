@@ -127,77 +127,79 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       contentPadding: const EdgeInsets.all(16),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '注文日時 : ${dateText('yyyy/MM/dd HH:mm', widget.order.createdAt)}',
-            style: const TextStyle(
-              color: kGreyColor,
-              fontSize: 14,
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '注文日時 : ${dateText('yyyy/MM/dd HH:mm', widget.order.createdAt)}',
+              style: const TextStyle(
+                color: kGreyColor,
+                fontSize: 14,
+              ),
             ),
-          ),
-          Text(
-            'ステータス : ${widget.order.statusText()}',
-            style: const TextStyle(
-              color: kGreyColor,
-              fontSize: 14,
+            Text(
+              'ステータス : ${widget.order.statusText()}',
+              style: const TextStyle(
+                color: kGreyColor,
+                fontSize: 14,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            '注文した商品 : ',
-            style: TextStyle(
-              color: kGreyColor,
-              fontSize: 14,
+            const SizedBox(height: 8),
+            const Text(
+              '注文した商品 : ',
+              style: TextStyle(
+                color: kGreyColor,
+                fontSize: 14,
+              ),
             ),
-          ),
-          Column(
-            children: widget.order.carts.map((cart) {
-              return CartList(cart: cart, viewDelivery: true);
-            }).toList(),
-          ),
-          const SizedBox(height: 8),
-          widget.order.status == 0
-              ? CustomSmButton(
-                  label: 'キャンセルする',
-                  labelColor: kWhiteColor,
-                  backgroundColor: kOrangeColor,
-                  onPressed: () async {
-                    String? error =
-                        await widget.orderProvider.cancel(widget.order);
-                    if (error != null) {
+            Column(
+              children: widget.order.carts.map((cart) {
+                return CartList(cart: cart, viewDelivery: true);
+              }).toList(),
+            ),
+            const SizedBox(height: 8),
+            widget.order.status == 0
+                ? CustomSmButton(
+                    label: 'キャンセルする',
+                    labelColor: kWhiteColor,
+                    backgroundColor: kOrangeColor,
+                    onPressed: () async {
+                      String? error =
+                          await widget.orderProvider.cancel(widget.order);
+                      if (error != null) {
+                        if (!mounted) return;
+                        showMessage(context, error, false);
+                        return;
+                      }
                       if (!mounted) return;
-                      showMessage(context, error, false);
-                      return;
-                    }
-                    if (!mounted) return;
-                    showMessage(context, 'キャンセルに成功しました', true);
-                    Navigator.pop(context);
-                  },
-                )
-              : Container(),
-          widget.order.status == 1
-              ? CustomSmButton(
-                  label: '再注文する',
-                  labelColor: kWhiteColor,
-                  backgroundColor: kBlueColor,
-                  onPressed: () async {
-                    String? error =
-                        await widget.orderProvider.reCreate(widget.order);
-                    if (error != null) {
+                      showMessage(context, 'キャンセルに成功しました', true);
+                      Navigator.pop(context);
+                    },
+                  )
+                : Container(),
+            widget.order.status == 1
+                ? CustomSmButton(
+                    label: '再注文する',
+                    labelColor: kWhiteColor,
+                    backgroundColor: kBlueColor,
+                    onPressed: () async {
+                      String? error =
+                          await widget.orderProvider.reCreate(widget.order);
+                      if (error != null) {
+                        if (!mounted) return;
+                        showMessage(context, error, false);
+                        return;
+                      }
                       if (!mounted) return;
-                      showMessage(context, error, false);
-                      return;
-                    }
-                    if (!mounted) return;
-                    showMessage(context, '再注文に成功しました', true);
-                    Navigator.pop(context);
-                  },
-                )
-              : Container(),
-        ],
+                      showMessage(context, '再注文に成功しました', true);
+                      Navigator.pop(context);
+                    },
+                  )
+                : Container(),
+          ],
+        ),
       ),
     );
   }
