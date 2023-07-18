@@ -24,11 +24,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  ShopLoginService shopLoginService = ShopLoginService();
   int currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    ShopLoginService shopLoginService = ShopLoginService();
     final authProvider = Provider.of<AuthProvider>(context);
     List<Widget> bodyWidgets = [
       OrderScreen(authProvider: authProvider),
