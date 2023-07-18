@@ -52,7 +52,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          '${widget.authProvider.shop?.name} : お気に入り設定',
+          '${widget.authProvider.shop?.name} : 注文商品設定',
           style: const TextStyle(color: kBlackColor),
         ),
         actions: [
@@ -67,7 +67,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 return;
               }
               if (!mounted) return;
-              showMessage(context, 'お気に入り設定を変更しました', true);
+              showMessage(context, '注文商品設定を変更しました', true);
             },
             child: const Text('保存'),
           ),

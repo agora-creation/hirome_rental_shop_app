@@ -55,7 +55,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             SettingListTile(
               iconData: Icons.favorite,
-              label: 'お気に入り設定',
+              label: '注文商品設定',
               onTap: () => pushScreen(
                 context,
                 FavoritesScreen(authProvider: authProvider),

@@ -68,7 +68,7 @@ class _OrderScreenState extends State<OrderScreen> {
               if (products.isEmpty) {
                 return const Center(
                   child: Text(
-                    '注文できる商品がありません',
+                    '注文できる商品がありません\n注文商品設定をご確認ください',
                     style: TextStyle(color: kWhiteColor),
                   ),
                 );

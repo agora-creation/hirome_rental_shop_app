@@ -7,7 +7,6 @@ import 'package:hirome_rental_shop_app/common/functions.dart';
 import 'package:hirome_rental_shop_app/models/cart.dart';
 import 'package:hirome_rental_shop_app/models/product.dart';
 import 'package:hirome_rental_shop_app/models/shop.dart';
-import 'package:hirome_rental_shop_app/models/shop_login.dart';
 import 'package:hirome_rental_shop_app/services/cart.dart';
 import 'package:hirome_rental_shop_app/services/shop.dart';
 import 'package:hirome_rental_shop_app/services/shop_login.dart';
@@ -24,14 +23,13 @@ class AuthProvider with ChangeNotifier {
   AuthStatus get status => _status;
   FirebaseAuth? auth;
   User? _authUser;
+  User? get authUser => _authUser;
   CartService cartService = CartService();
   ShopService shopService = ShopService();
   ShopLoginService shopLoginService = ShopLoginService();
   ShopModel? _shop;
-  ShopLoginModel? _shopLogin;
   List<CartModel> _carts = [];
   ShopModel? get shop => _shop;
-  ShopLoginModel? get shopLogin => _shopLogin;
   List<CartModel> get carts => _carts;
 
   TextEditingController number = TextEditingController();
@@ -52,6 +50,7 @@ class AuthProvider with ChangeNotifier {
       _status = AuthStatus.authenticating;
       notifyListeners();
       await auth?.signInAnonymously().then((value) async {
+        _authUser = value.user;
         ShopModel? tmpShop = await shopService.select(
           number: number.text,
           password: password.text,
@@ -120,7 +119,6 @@ class AuthProvider with ChangeNotifier {
     _status = AuthStatus.unauthenticated;
     await allRemovePrefs();
     _shop = null;
-    _shopLogin = null;
     _carts = [];
     notifyListeners();
     return Future.delayed(Duration.zero);
@@ -141,22 +139,11 @@ class AuthProvider with ChangeNotifier {
         _status = AuthStatus.unauthenticated;
       } else {
         _shop = tmpShop;
-        _shopLogin = await shopLoginService.select(_authUser?.uid);
         await initCarts();
         _status = AuthStatus.authenticated;
       }
     }
     notifyListeners();
-  }
-
-  bool loginCheck() {
-    if (shopLogin == null) return false;
-    if (shopLogin?.accept == false) return false;
-    return true;
-  }
-
-  Future reLoginCheck() async {
-    _shopLogin = await shopLoginService.select(_authUser?.uid);
   }
 
   Future initCarts() async {

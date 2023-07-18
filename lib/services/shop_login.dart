@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hirome_rental_shop_app/models/shop_login.dart';
 
 class ShopLoginService {
   String collection = 'shopLogin';
@@ -9,15 +8,10 @@ class ShopLoginService {
     firestore.collection(collection).doc(values['id']).set(values);
   }
 
-  Future<ShopLoginModel?> select(String? id) async {
-    ShopLoginModel? ret;
-    await firestore
+  Stream<DocumentSnapshot<Map<String, dynamic>>> streamList(String? id) {
+    return FirebaseFirestore.instance
         .collection(collection)
         .doc(id ?? 'error')
-        .get()
-        .then((value) {
-      ret = ShopLoginModel.fromSnapshot(value);
-    });
-    return ret;
+        .snapshots();
   }
 }

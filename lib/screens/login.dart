@@ -67,6 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                           authProvider.clearController();
                           if (!mounted) return;
+                          showMessage(context, 'ログイン申請を送信しました', true);
                           pushReplacementScreen(context, const HomeScreen());
                         },
                       ),
