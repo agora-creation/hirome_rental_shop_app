@@ -29,7 +29,6 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         automaticallyImplyLeading: false,
         backgroundColor: kWhiteColor,
-        centerTitle: true,
         title: Text(
           '${authProvider.shop?.name} : 注文確認',
           style: const TextStyle(color: kBlackColor),
