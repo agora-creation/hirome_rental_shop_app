@@ -48,7 +48,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '${widget.authProvider.shop?.name} : 注文',
+                      '${widget.authProvider.shop?.name} : 注文履歴',
                       style: const TextStyle(
                         color: kWhiteColor,
                         fontSize: 18,
