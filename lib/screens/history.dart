@@ -6,6 +6,7 @@ import 'package:hirome_rental_shop_app/models/order.dart';
 import 'package:hirome_rental_shop_app/providers/auth.dart';
 import 'package:hirome_rental_shop_app/providers/order.dart';
 import 'package:hirome_rental_shop_app/services/order.dart';
+import 'package:hirome_rental_shop_app/widgets/animation_background.dart';
 import 'package:hirome_rental_shop_app/widgets/cart_list.dart';
 import 'package:hirome_rental_shop_app/widgets/custom_sm_button.dart';
 import 'package:hirome_rental_shop_app/widgets/date_range_field.dart';
@@ -31,79 +32,84 @@ class _HistoryScreenState extends State<HistoryScreen> {
   Widget build(BuildContext context) {
     final orderProvider = Provider.of<OrderProvider>(context);
 
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: 8,
-        right: 8,
-        bottom: 16,
-      ),
-      child: Card(
-        elevation: 5,
-        child: Column(
-          children: [
-            DateRangeField(
-              start: orderProvider.searchStart,
-              end: orderProvider.searchEnd,
-              onTap: () async {
-                var selected = await showDateRangePicker(
-                  context: context,
-                  initialDateRange: DateTimeRange(
-                    start: orderProvider.searchStart,
-                    end: orderProvider.searchEnd,
-                  ),
-                  firstDate: kSearchFirstDate,
-                  lastDate: kSearchLastDate,
-                  saveText: '検索',
-                );
-                if (selected != null) {
-                  orderProvider.searchChange(selected.start, selected.end);
-                }
-              },
-            ),
-            const Divider(height: 0, color: kGreyColor),
-            Expanded(
-              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                stream: orderService.streamList(
-                  shop: widget.authProvider.shop!,
-                  searchStart: orderProvider.searchStart,
-                  searchEnd: orderProvider.searchEnd,
-                ),
-                builder: (context, snapshot) {
-                  List<OrderModel> orders = [];
-                  if (snapshot.hasData) {
-                    for (DocumentSnapshot<Map<String, dynamic>> doc
-                        in snapshot.data!.docs) {
-                      orders.add(OrderModel.fromSnapshot(doc));
-                    }
-                  }
-                  if (orders.isEmpty) {
-                    return const Center(
-                      child: Text('注文がありません'),
+    return Stack(
+      children: [
+        const AnimationBackground(),
+        Padding(
+          padding: const EdgeInsets.only(
+            left: 8,
+            right: 8,
+            bottom: 16,
+          ),
+          child: Card(
+            elevation: 5,
+            child: Column(
+              children: [
+                DateRangeField(
+                  start: orderProvider.searchStart,
+                  end: orderProvider.searchEnd,
+                  onTap: () async {
+                    var selected = await showDateRangePicker(
+                      context: context,
+                      initialDateRange: DateTimeRange(
+                        start: orderProvider.searchStart,
+                        end: orderProvider.searchEnd,
+                      ),
+                      firstDate: kSearchFirstDate,
+                      lastDate: kSearchLastDate,
+                      saveText: '検索',
                     );
-                  }
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: orders.length,
-                    itemBuilder: (context, index) {
-                      OrderModel order = orders[index];
-                      return HistoryListTile(
-                        order: order,
-                        onTap: () => showDialog(
-                          context: context,
-                          builder: (context) => OrderDetailsDialog(
-                            orderProvider: orderProvider,
+                    if (selected != null) {
+                      orderProvider.searchChange(selected.start, selected.end);
+                    }
+                  },
+                ),
+                const Divider(height: 0, color: kGreyColor),
+                Expanded(
+                  child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                    stream: orderService.streamList(
+                      shop: widget.authProvider.shop!,
+                      searchStart: orderProvider.searchStart,
+                      searchEnd: orderProvider.searchEnd,
+                    ),
+                    builder: (context, snapshot) {
+                      List<OrderModel> orders = [];
+                      if (snapshot.hasData) {
+                        for (DocumentSnapshot<Map<String, dynamic>> doc
+                            in snapshot.data!.docs) {
+                          orders.add(OrderModel.fromSnapshot(doc));
+                        }
+                      }
+                      if (orders.isEmpty) {
+                        return const Center(
+                          child: Text('注文がありません'),
+                        );
+                      }
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: orders.length,
+                        itemBuilder: (context, index) {
+                          OrderModel order = orders[index];
+                          return HistoryListTile(
                             order: order,
-                          ),
-                        ),
+                            onTap: () => showDialog(
+                              context: context,
+                              builder: (context) => OrderDetailsDialog(
+                                orderProvider: orderProvider,
+                                order: order,
+                              ),
+                            ),
+                          );
+                        },
                       );
                     },
-                  );
-                },
-              ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }

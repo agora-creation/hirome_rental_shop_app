@@ -5,6 +5,7 @@ import 'package:hirome_rental_shop_app/models/cart.dart';
 import 'package:hirome_rental_shop_app/models/product.dart';
 import 'package:hirome_rental_shop_app/providers/auth.dart';
 import 'package:hirome_rental_shop_app/services/product.dart';
+import 'package:hirome_rental_shop_app/widgets/animation_background.dart';
 import 'package:hirome_rental_shop_app/widgets/custom_image.dart';
 import 'package:hirome_rental_shop_app/widgets/custom_lg_button.dart';
 import 'package:hirome_rental_shop_app/widgets/link_text.dart';
@@ -38,65 +39,70 @@ class _OrderScreenState extends State<OrderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
-        const Text(
-          '注文したい商品をタップしてください',
-          style: TextStyle(
-            color: kWhiteColor,
-            fontSize: 14,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Expanded(
-          child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: productService.streamList(),
-            builder: (context, snapshot) {
-              List<ProductModel> products = [];
-              List<String> favorites =
-                  widget.authProvider.shop?.favorites ?? [];
-              if (snapshot.hasData) {
-                for (DocumentSnapshot<Map<String, dynamic>> doc
-                    in snapshot.data!.docs) {
-                  ProductModel product = ProductModel.fromSnapshot(doc);
-                  var contain = favorites.where((e) => e == product.number);
-                  if (contain.isNotEmpty) {
-                    products.add(product);
+        const AnimationBackground(),
+        Column(
+          children: [
+            const Text(
+              '注文したい商品をタップしてください',
+              style: TextStyle(
+                color: kWhiteColor,
+                fontSize: 14,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Expanded(
+              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                stream: productService.streamList(),
+                builder: (context, snapshot) {
+                  List<ProductModel> products = [];
+                  List<String> favorites =
+                      widget.authProvider.shop?.favorites ?? [];
+                  if (snapshot.hasData) {
+                    for (DocumentSnapshot<Map<String, dynamic>> doc
+                        in snapshot.data!.docs) {
+                      ProductModel product = ProductModel.fromSnapshot(doc);
+                      var contain = favorites.where((e) => e == product.number);
+                      if (contain.isNotEmpty) {
+                        products.add(product);
+                      }
+                    }
                   }
-                }
-              }
-              if (products.isEmpty) {
-                return const Center(
-                  child: Text(
-                    '注文できる商品がありません\n注文商品設定をご確認ください',
-                    style: TextStyle(color: kWhiteColor),
-                  ),
-                );
-              }
-              return GridView.builder(
-                gridDelegate: kProductGrid,
-                shrinkWrap: true,
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                itemCount: products.length,
-                itemBuilder: (context, index) {
-                  ProductModel product = products[index];
-                  return ProductCard(
-                    product: product,
-                    carts: widget.authProvider.carts,
-                    onTap: () => showDialog(
-                      context: context,
-                      builder: (context) => ProductDetailsDialog(
-                        authProvider: widget.authProvider,
-                        product: product,
+                  if (products.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        '注文できる商品がありません\n注文商品設定をご確認ください',
+                        style: TextStyle(color: kWhiteColor),
                       ),
-                    ).then((value) {
-                      widget.authProvider.initCarts();
-                    }),
+                    );
+                  }
+                  return GridView.builder(
+                    gridDelegate: kProductGrid,
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    itemCount: products.length,
+                    itemBuilder: (context, index) {
+                      ProductModel product = products[index];
+                      return ProductCard(
+                        product: product,
+                        carts: widget.authProvider.carts,
+                        onTap: () => showDialog(
+                          context: context,
+                          builder: (context) => ProductDetailsDialog(
+                            authProvider: widget.authProvider,
+                            product: product,
+                          ),
+                        ).then((value) {
+                          widget.authProvider.initCarts();
+                        }),
+                      );
+                    },
                   );
                 },
-              );
-            },
-          ),
+              ),
+            ),
+          ],
         ),
       ],
     );
