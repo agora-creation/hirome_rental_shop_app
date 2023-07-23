@@ -8,7 +8,6 @@ import 'package:hirome_rental_shop_app/screens/history.dart';
 import 'package:hirome_rental_shop_app/screens/login.dart';
 import 'package:hirome_rental_shop_app/screens/order.dart';
 import 'package:hirome_rental_shop_app/screens/order_cart.dart';
-import 'package:hirome_rental_shop_app/screens/settings.dart';
 import 'package:hirome_rental_shop_app/services/shop_login.dart';
 import 'package:hirome_rental_shop_app/widgets/cart_next_button.dart';
 import 'package:hirome_rental_shop_app/widgets/custom_bottom_navigation_bar.dart';
@@ -77,21 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         }
         return Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            title: Text(
-              '${authProvider.shop?.name} : ${bodyTitles[currentIndex]}',
-            ),
-            actions: [
-              IconButton(
-                onPressed: () => showBottomUpScreen(
-                  context,
-                  const SettingsScreen(),
-                ),
-                icon: const Icon(Icons.settings),
-              ),
-            ],
-          ),
           body: bodyWidgets[currentIndex],
           floatingActionButton: CartNextButton(
             currentIndex: currentIndex,
