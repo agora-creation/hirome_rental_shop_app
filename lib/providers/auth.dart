@@ -33,11 +33,9 @@ class AuthProvider with ChangeNotifier {
   List<CartModel> get carts => _carts;
 
   TextEditingController number = TextEditingController();
-  TextEditingController password = TextEditingController();
 
   void clearController() {
     number.clear();
-    password.clear();
   }
 
   AuthProvider.initialize() : auth = FirebaseAuth.instance {
@@ -51,10 +49,7 @@ class AuthProvider with ChangeNotifier {
       notifyListeners();
       await auth?.signInAnonymously().then((value) async {
         _authUser = value.user;
-        ShopModel? tmpShop = await shopService.select(
-          number: number.text,
-          password: password.text,
-        );
+        ShopModel? tmpShop = await shopService.select(number: number.text);
         if (tmpShop != null) {
           _shop = tmpShop;
           DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
@@ -75,7 +70,6 @@ class AuthProvider with ChangeNotifier {
             'createdAt': DateTime.now(),
           });
           await setPrefsString('shopNumber', tmpShop.number);
-          await setPrefsString('shopPassword', tmpShop.password);
         } else {
           await auth?.signOut();
           error = 'ログインに失敗しました';
@@ -85,19 +79,6 @@ class AuthProvider with ChangeNotifier {
       _status = AuthStatus.unauthenticated;
       notifyListeners();
       error = 'ログインに失敗しました';
-    }
-    return error;
-  }
-
-  Future<String?> updatePassword(String newPassword) async {
-    String? error;
-    try {
-      shopService.update({
-        'id': shop?.id,
-        'password': newPassword,
-      });
-    } catch (e) {
-      error = 'パスワード変更に失敗しました';
     }
     return error;
   }
@@ -131,11 +112,7 @@ class AuthProvider with ChangeNotifier {
     } else {
       _authUser = authUser;
       String? tmpShopNumber = await getPrefsString('shopNumber');
-      String? tmpShopPassword = await getPrefsString('shopPassword');
-      ShopModel? tmpShop = await shopService.select(
-        number: tmpShopNumber,
-        password: tmpShopPassword,
-      );
+      ShopModel? tmpShop = await shopService.select(number: tmpShopNumber);
       if (tmpShop == null) {
         _status = AuthStatus.unauthenticated;
       } else {

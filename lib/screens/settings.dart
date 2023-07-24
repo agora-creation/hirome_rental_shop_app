@@ -5,7 +5,6 @@ import 'package:hirome_rental_shop_app/common/style.dart';
 import 'package:hirome_rental_shop_app/providers/auth.dart';
 import 'package:hirome_rental_shop_app/screens/favorites.dart';
 import 'package:hirome_rental_shop_app/screens/login.dart';
-import 'package:hirome_rental_shop_app/screens/password.dart';
 import 'package:hirome_rental_shop_app/widgets/link_text.dart';
 import 'package:hirome_rental_shop_app/widgets/setting_list_tile.dart';
 import 'package:provider/provider.dart';
@@ -45,17 +44,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SettingListTile(
-              iconData: Icons.key,
-              label: 'パスワード変更',
-              topBorder: true,
-              onTap: () => pushScreen(
-                context,
-                PasswordScreen(authProvider: authProvider),
-              ),
-            ),
-            SettingListTile(
               iconData: Icons.favorite,
               label: '注文商品設定',
+              topBorder: true,
               onTap: () => pushScreen(
                 context,
                 FavoritesScreen(authProvider: authProvider),
