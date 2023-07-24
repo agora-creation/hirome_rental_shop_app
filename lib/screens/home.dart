@@ -9,6 +9,7 @@ import 'package:hirome_rental_shop_app/screens/login.dart';
 import 'package:hirome_rental_shop_app/screens/order.dart';
 import 'package:hirome_rental_shop_app/screens/order_cart.dart';
 import 'package:hirome_rental_shop_app/services/shop_login.dart';
+import 'package:hirome_rental_shop_app/widgets/animation_background.dart';
 import 'package:hirome_rental_shop_app/widgets/cart_next_button.dart';
 import 'package:hirome_rental_shop_app/widgets/custom_bottom_navigation_bar.dart';
 import 'package:hirome_rental_shop_app/widgets/link_text.dart';
@@ -44,34 +45,39 @@ class _HomeScreenState extends State<HomeScreen> {
         }
         if (shopLogin == null || shopLogin.accept == false) {
           return Scaffold(
-            body: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const LoginTitle(),
-                    const Column(
+            body: Stack(
+              children: [
+                const AnimationBackground(),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text(
-                          '管理者へログイン申請を送信しました。\n承認まで今しばらくお待ちくださいませ。',
-                          style: TextStyle(color: kWhiteColor),
+                        const LoginTitle(),
+                        const Column(
+                          children: [
+                            Text(
+                              '管理者へログイン申請を送信しました。\n承認まで今しばらくお待ちくださいませ。',
+                              style: TextStyle(color: kWhiteColor),
+                            ),
+                          ],
+                        ),
+                        LinkText(
+                          label: 'ログインへ戻る',
+                          labelColor: kWhiteColor,
+                          onTap: () async {
+                            await authProvider.signOut();
+                            authProvider.clearController();
+                            if (!mounted) return;
+                            pushReplacementScreen(context, const LoginScreen());
+                          },
                         ),
                       ],
                     ),
-                    LinkText(
-                      label: 'ログインへ戻る',
-                      labelColor: kWhiteColor,
-                      onTap: () async {
-                        await authProvider.signOut();
-                        authProvider.clearController();
-                        if (!mounted) return;
-                        pushReplacementScreen(context, const LoginScreen());
-                      },
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
           );
         }
