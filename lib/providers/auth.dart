@@ -57,13 +57,14 @@ class AuthProvider with ChangeNotifier {
         );
         if (tmpShop != null) {
           _shop = tmpShop;
-          final deviceInfoPlugin = DeviceInfoPlugin();
-          final deviceInfo = await deviceInfoPlugin.deviceInfo;
+          DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
           String deviceName = '';
           if (Platform.isAndroid) {
-            deviceName = deviceInfo.data['device'];
+            final androidInfo = await deviceInfo.androidInfo;
+            deviceName = androidInfo.model;
           } else if (Platform.isIOS) {
-            deviceName = deviceInfo.data['name'];
+            final iosInfo = await deviceInfo.iosInfo;
+            deviceName = iosInfo.utsname.machine;
           }
           shopLoginService.create({
             'id': value.user?.uid,
