@@ -95,6 +95,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               saveText: '検索',
                             );
                             if (selected != null) {
+                              var diff =
+                                  selected.end.difference(selected.start);
+                              int diffDays = diff.inDays;
+                              if (diffDays > 31) {
+                                if (!mounted) return;
+                                showMessage(
+                                    context, '1ヵ月以上の範囲が選択されています', false);
+                                return;
+                              }
                               orderProvider.searchChange(
                                   selected.start, selected.end);
                             }
