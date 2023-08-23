@@ -3,7 +3,7 @@ description: ひろめ市場 食器レンタルシステム - 店舗専用
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.3+1
+version: 1.0.4+1
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -58,5 +58,5 @@ flutter_icons:
   android: true
   ios: true
   image_path: 'assets/images/icon.png'
-  adaptive_icon_background: '#03A9F4'
+  adaptive_icon_background: '#EF5350'
   adaptive_icon_foreground: 'assets/images/icon_adaptive_foreground.png'
