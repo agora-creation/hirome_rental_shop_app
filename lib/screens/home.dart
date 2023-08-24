@@ -59,7 +59,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             Text(
                               '管理者へログイン申請を送信しました。\n承認まで今しばらくお待ちくださいませ。',
-                              style: TextStyle(color: kWhiteColor),
+                              style: TextStyle(
+                                color: kWhiteColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ],
                         ),
