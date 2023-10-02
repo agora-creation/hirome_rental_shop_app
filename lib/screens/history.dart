@@ -90,8 +90,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 start: orderProvider.searchStart,
                                 end: orderProvider.searchEnd,
                               ),
-                              firstDate: kSearchFirstDate,
-                              lastDate: kSearchLastDate,
+                              firstDate: kFirstDate,
+                              lastDate: kLastDate,
                               saveText: '検索',
                             );
                             if (selected != null) {
