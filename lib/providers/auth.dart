@@ -70,6 +70,7 @@ class AuthProvider with ChangeNotifier {
             'requestName': requestName.text,
             'deviceName': deviceName,
             'accept': false,
+            'acceptedAt': DateTime.now(),
             'createdAt': DateTime.now(),
           });
           await setPrefsString('shopNumber', tmpShop.number);
