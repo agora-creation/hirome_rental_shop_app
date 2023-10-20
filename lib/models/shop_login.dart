@@ -7,6 +7,8 @@ class ShopLoginModel {
   String _requestName = '';
   String _deviceName = '';
   bool _accept = false;
+  DateTime _acceptedAt = DateTime.now();
+  DateTime _signOutedAt = DateTime.now();
   DateTime _createdAt = DateTime.now();
 
   String get id => _id;
@@ -15,6 +17,8 @@ class ShopLoginModel {
   String get requestName => _requestName;
   String get deviceName => _deviceName;
   bool get accept => _accept;
+  DateTime get acceptedAt => _acceptedAt;
+  DateTime get signOutedAt => _signOutedAt;
   DateTime get createdAt => _createdAt;
 
   ShopLoginModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot) {
@@ -25,6 +29,14 @@ class ShopLoginModel {
     _requestName = map['requestName'] ?? '';
     _deviceName = map['deviceName'] ?? '';
     _accept = map['accept'] ?? false;
-    _createdAt = map['createdAt'].toDate() ?? DateTime.now();
+    if (map['acceptedAt'] != null) {
+      _acceptedAt = map['acceptedAt'].toDate() ?? DateTime.now();
+    }
+    if (map['signOutedAt'] != null) {
+      _signOutedAt = map['signOutedAt'].toDate() ?? DateTime.now();
+    }
+    if (map['createdAt'] != null) {
+      _createdAt = map['createdAt'].toDate() ?? DateTime.now();
+    }
   }
 }

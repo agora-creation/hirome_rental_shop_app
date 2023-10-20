@@ -99,6 +99,10 @@ class AuthProvider with ChangeNotifier {
     return error;
   }
 
+  Future deleteShopLogin() async {
+    shopLoginService.delete({'id': _authUser?.uid});
+  }
+
   Future signOut() async {
     await auth?.signOut();
     _status = AuthStatus.unauthenticated;
