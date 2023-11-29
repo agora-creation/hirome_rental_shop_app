@@ -46,6 +46,8 @@ class AuthProvider with ChangeNotifier {
 
   Future<String?> signIn() async {
     String? error;
+    if (number.text == '') return '店舗番号をご入力ください';
+    if (requestName.text == '') return 'あなたの名前をご入力ください';
     try {
       _status = AuthStatus.authenticating;
       notifyListeners();
