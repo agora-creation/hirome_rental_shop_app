@@ -17,6 +17,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  String errorText = '';
+
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
@@ -46,6 +48,16 @@ class _LoginScreenState extends State<LoginScreen> {
                               fontSize: 14,
                             ),
                           ),
+                          errorText != ''
+                              ? Text(
+                                  errorText,
+                                  style: const TextStyle(
+                                    color: kRedColor,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
+                              : Container(),
                           const SizedBox(height: 16),
                           CustomTextFormField(
                             controller: authProvider.number,
@@ -72,8 +84,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () async {
                               String? error = await authProvider.signIn();
                               if (error != null) {
-                                if (!mounted) return;
-                                showMessage(context, error, false);
+                                setState(() {
+                                  errorText = error;
+                                });
                                 return;
                               }
                               authProvider.clearController();
