@@ -18,6 +18,8 @@ class OrderCartScreen extends StatefulWidget {
 }
 
 class _OrderCartScreenState extends State<OrderCartScreen> {
+  bool buttonDisabled = false;
+
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
@@ -68,27 +70,40 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
             ),
             const Divider(height: 1, color: kGreyColor),
             const SizedBox(height: 24),
-            CustomLgButton(
-              label: '注文する',
-              labelColor: kWhiteColor,
-              backgroundColor: kBlueColor,
-              onPressed: () async {
-                String? error = await orderProvider.create(
-                  shop: authProvider.shop,
-                  carts: authProvider.carts,
-                );
-                if (error != null) {
-                  if (!mounted) return;
-                  showMessage(context, error, false);
-                  return;
-                }
-                await authProvider.clearCart();
-                await authProvider.initCarts();
-                if (!mounted) return;
-                showMessage(context, '注文に成功しました', true);
-                Navigator.of(context, rootNavigator: true).pop();
-              },
-            ),
+            buttonDisabled
+                ? const CustomLgButton(
+                    label: '注文する',
+                    labelColor: kWhiteColor,
+                    backgroundColor: kGreyColor,
+                    onPressed: null,
+                  )
+                : CustomLgButton(
+                    label: '注文する',
+                    labelColor: kWhiteColor,
+                    backgroundColor: kBlueColor,
+                    onPressed: () async {
+                      setState(() {
+                        buttonDisabled = true;
+                      });
+                      String? error = await orderProvider.create(
+                        shop: authProvider.shop,
+                        carts: authProvider.carts,
+                      );
+                      if (error != null) {
+                        if (!mounted) return;
+                        showMessage(context, error, false);
+                        setState(() {
+                          buttonDisabled = false;
+                        });
+                        return;
+                      }
+                      await authProvider.clearCart();
+                      await authProvider.initCarts();
+                      if (!mounted) return;
+                      showMessage(context, '注文に成功しました', true);
+                      Navigator.of(context, rootNavigator: true).pop();
+                    },
+                  ),
             const SizedBox(height: 24),
             Center(
               child: LinkText(

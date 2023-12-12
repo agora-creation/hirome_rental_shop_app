@@ -45,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
         }
         if (shopLogin == null || shopLogin.id == '') {
           return Scaffold(
+            backgroundColor: kRedColor,
             body: Stack(
               children: [
                 const AnimationBackground(),
@@ -58,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         const Text(
                           '管理者からログインをブロックされました。\nログイン申請から始めてください。',
                           style: TextStyle(
-                            color: kWhiteColor,
+                            color: kYellowColor,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),

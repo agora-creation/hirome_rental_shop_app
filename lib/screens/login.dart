@@ -17,6 +17,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool buttonDisabled = false;
   String errorText = '';
 
   @override
@@ -77,27 +78,38 @@ class _LoginScreenState extends State<LoginScreen> {
                             prefix: Icons.person,
                           ),
                           const SizedBox(height: 16),
-                          CustomLgButton(
-                            label: 'ログイン',
-                            labelColor: kWhiteColor,
-                            backgroundColor: kBlueColor,
-                            onPressed: () async {
-                              String? error = await authProvider.signIn();
-                              if (error != null) {
-                                setState(() {
-                                  errorText = error;
-                                });
-                                return;
-                              }
-                              authProvider.clearController();
-                              if (!mounted) return;
-                              showMessage(context, 'ログイン申請を送信しました', true);
-                              pushReplacementScreen(
-                                context,
-                                const HomeScreen(),
-                              );
-                            },
-                          ),
+                          buttonDisabled
+                              ? const CustomLgButton(
+                                  label: 'ログイン',
+                                  labelColor: kWhiteColor,
+                                  backgroundColor: kGreyColor,
+                                  onPressed: null,
+                                )
+                              : CustomLgButton(
+                                  label: 'ログイン',
+                                  labelColor: kWhiteColor,
+                                  backgroundColor: kBlueColor,
+                                  onPressed: () async {
+                                    setState(() {
+                                      buttonDisabled = true;
+                                    });
+                                    String? error = await authProvider.signIn();
+                                    if (error != null) {
+                                      setState(() {
+                                        buttonDisabled = false;
+                                        errorText = error;
+                                      });
+                                      return;
+                                    }
+                                    authProvider.clearController();
+                                    if (!mounted) return;
+                                    showMessage(context, 'ログイン申請を送信しました', true);
+                                    pushReplacementScreen(
+                                      context,
+                                      const HomeScreen(),
+                                    );
+                                  },
+                                ),
                         ],
                       ),
                     ),
