@@ -39,16 +39,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   Card(
                     elevation: 5,
                     child: Padding(
-                      padding: const EdgeInsets.all(32),
+                      padding: const EdgeInsets.all(24),
                       child: Column(
                         children: [
-                          const Text(
-                            '『店舗番号』と『あなたの名前』を入力して、『ログイン』ボタンをタップしてください',
-                            style: TextStyle(
-                              color: kGrey2Color,
-                              fontSize: 14,
-                            ),
-                          ),
                           errorText != ''
                               ? Text(
                                   errorText,
@@ -59,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 )
                               : Container(),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 8),
                           CustomTextFormField(
                             controller: authProvider.number,
                             textInputType: TextInputType.number,
