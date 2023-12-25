@@ -8,6 +8,7 @@ import 'package:hirome_rental_shop_app/screens/login.dart';
 import 'package:hirome_rental_shop_app/widgets/link_text.dart';
 import 'package:hirome_rental_shop_app/widgets/setting_list_tile.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -51,6 +52,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 context,
                 FavoritesScreen(authProvider: authProvider),
               ),
+            ),
+            SettingListTile(
+              iconData: Icons.backup,
+              label: '過去のデータを確認',
+              onTap: () async {
+                String number = authProvider.shop?.number ?? '';
+                final url = Uri.parse(
+                  'https://hirome.co.jp/rental/history/access.php?number=$number',
+                );
+                if (!await launchUrl(url)) {
+                  throw Exception('Could not launch $url');
+                }
+              },
             ),
             const SizedBox(height: 24),
             Center(
