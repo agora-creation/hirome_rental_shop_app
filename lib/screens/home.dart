@@ -121,14 +121,6 @@ class _HomeScreenState extends State<HomeScreen> {
         }
         return Scaffold(
           body: bodyWidgets[currentIndex],
-          // floatingActionButton: CartNextButton(
-          //   currentIndex: currentIndex,
-          //   carts: authProvider.carts,
-          //   onPressed: () => showBottomUpScreen(
-          //     context,
-          //     const OrderCartScreen(),
-          //   ),
-          // ),
           bottomNavigationBar: CustomBottomNavigationBar(
             currentIndex: currentIndex,
             onTap: (index) {

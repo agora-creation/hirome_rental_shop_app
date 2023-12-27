@@ -144,31 +144,31 @@ class _OrderScreenState extends State<OrderScreen> {
             ],
           ),
         ),
-        widget.authProvider.carts.isNotEmpty
-            ? Padding(
-                padding: const EdgeInsets.all(8),
-                child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: ElevatedButton(
-                    onPressed: () => showBottomUpScreen(
-                      context,
-                      const OrderCartScreen(),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: kRedColor,
-                    ),
-                    child: const Text(
-                      '注文に進む',
-                      style: TextStyle(
-                        color: kWhiteColor,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: Align(
+            alignment: Alignment.bottomRight,
+            child: ElevatedButton(
+              onPressed: widget.authProvider.carts.isNotEmpty
+                  ? () => showBottomUpScreen(
+                        context,
+                        const OrderCartScreen(),
+                      )
+                  : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: kRedColor,
+              ),
+              child: const Text(
+                '注文に進む',
+                style: TextStyle(
+                  color: kWhiteColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
                 ),
-              )
-            : Container(),
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
