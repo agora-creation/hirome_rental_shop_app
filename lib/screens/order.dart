@@ -5,6 +5,7 @@ import 'package:hirome_rental_shop_app/common/style.dart';
 import 'package:hirome_rental_shop_app/models/cart.dart';
 import 'package:hirome_rental_shop_app/models/product.dart';
 import 'package:hirome_rental_shop_app/providers/auth.dart';
+import 'package:hirome_rental_shop_app/screens/order_cart.dart';
 import 'package:hirome_rental_shop_app/screens/settings.dart';
 import 'package:hirome_rental_shop_app/services/product.dart';
 import 'package:hirome_rental_shop_app/widgets/animation_background.dart';
@@ -114,7 +115,11 @@ class _OrderScreenState extends State<OrderScreen> {
                     return GridView.builder(
                       gridDelegate: kProductGrid,
                       shrinkWrap: true,
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      padding: const EdgeInsets.only(
+                        left: 8,
+                        right: 8,
+                        bottom: 40,
+                      ),
                       itemCount: products.length,
                       itemBuilder: (context, index) {
                         ProductModel product = products[index];
@@ -139,6 +144,31 @@ class _OrderScreenState extends State<OrderScreen> {
             ],
           ),
         ),
+        widget.authProvider.carts.isNotEmpty
+            ? Padding(
+                padding: const EdgeInsets.all(8),
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: ElevatedButton(
+                    onPressed: () => showBottomUpScreen(
+                      context,
+                      const OrderCartScreen(),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: kRedColor,
+                    ),
+                    child: const Text(
+                      '注文に進む',
+                      style: TextStyle(
+                        color: kWhiteColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            : Container(),
       ],
     );
   }
