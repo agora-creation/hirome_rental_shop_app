@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           const SizedBox(height: 8),
                           CustomTextFormField(
                             controller: authProvider.number,
-                            textInputType: TextInputType.number,
+                            textInputType: TextInputType.text,
                             maxLines: 1,
                             label: '店舗番号',
                             color: kBlackColor,
