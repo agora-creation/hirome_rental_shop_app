@@ -44,81 +44,83 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              '注文の内容を確認してください\n間違いなければ『注文する』ボタンを押してください',
-              style: TextStyle(
-                color: kRedColor,
-                fontSize: 14,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                '注文の内容を確認してください\n間違いなければ『注文する』ボタンを押してください',
+                style: TextStyle(
+                  color: kRedColor,
+                  fontSize: 14,
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            const Text('注文する商品'),
-            const Divider(height: 1, color: kGreyColor),
-            SizedBox(
-              height: 350,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: authProvider.carts.length,
-                itemBuilder: (context, index) {
-                  CartModel cart = authProvider.carts[index];
-                  return CartList(cart: cart);
-                },
+              const SizedBox(height: 16),
+              const Text('注文する商品'),
+              const Divider(height: 1, color: kGreyColor),
+              SizedBox(
+                height: 350,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: authProvider.carts.length,
+                  itemBuilder: (context, index) {
+                    CartModel cart = authProvider.carts[index];
+                    return CartList(cart: cart);
+                  },
+                ),
               ),
-            ),
-            const Divider(height: 1, color: kGreyColor),
-            const SizedBox(height: 24),
-            buttonDisabled
-                ? const CustomLgButton(
-                    label: '注文する',
-                    labelColor: kWhiteColor,
-                    backgroundColor: kGreyColor,
-                    onPressed: null,
-                  )
-                : CustomLgButton(
-                    label: '注文する',
-                    labelColor: kWhiteColor,
-                    backgroundColor: kBlueColor,
-                    onPressed: () async {
-                      setState(() {
-                        buttonDisabled = true;
-                      });
-                      String? error = await orderProvider.create(
-                        shop: authProvider.shop,
-                        carts: authProvider.carts,
-                      );
-                      if (error != null) {
-                        if (!mounted) return;
-                        showMessage(context, error, false);
+              const Divider(height: 1, color: kGreyColor),
+              const SizedBox(height: 24),
+              buttonDisabled
+                  ? const CustomLgButton(
+                      label: '注文する',
+                      labelColor: kWhiteColor,
+                      backgroundColor: kGreyColor,
+                      onPressed: null,
+                    )
+                  : CustomLgButton(
+                      label: '注文する',
+                      labelColor: kWhiteColor,
+                      backgroundColor: kBlueColor,
+                      onPressed: () async {
                         setState(() {
-                          buttonDisabled = false;
+                          buttonDisabled = true;
                         });
-                        return;
-                      }
-                      await authProvider.clearCart();
-                      await authProvider.initCarts();
-                      if (!mounted) return;
-                      showMessage(context, '注文に成功しました', true);
-                      Navigator.of(context, rootNavigator: true).pop();
-                    },
-                  ),
-            const SizedBox(height: 24),
-            Center(
-              child: LinkText(
-                label: 'カートを空にする',
-                labelColor: kRedColor,
-                onTap: () async {
-                  await authProvider.clearCart();
-                  await authProvider.initCarts();
-                  if (!mounted) return;
-                  showMessage(context, 'カートを空にしました', true);
-                  Navigator.of(context, rootNavigator: true).pop();
-                },
+                        String? error = await orderProvider.create(
+                          shop: authProvider.shop,
+                          carts: authProvider.carts,
+                        );
+                        if (error != null) {
+                          if (!mounted) return;
+                          showMessage(context, error, false);
+                          setState(() {
+                            buttonDisabled = false;
+                          });
+                          return;
+                        }
+                        await authProvider.clearCart();
+                        await authProvider.initCarts();
+                        if (!mounted) return;
+                        showMessage(context, '注文に成功しました', true);
+                        Navigator.of(context, rootNavigator: true).pop();
+                      },
+                    ),
+              const SizedBox(height: 24),
+              Center(
+                child: LinkText(
+                  label: 'カートを空にする',
+                  labelColor: kRedColor,
+                  onTap: () async {
+                    await authProvider.clearCart();
+                    await authProvider.initCarts();
+                    if (!mounted) return;
+                    showMessage(context, 'カートを空にしました', true);
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -11,6 +11,7 @@ import 'package:hirome_rental_shop_app/services/product.dart';
 import 'package:hirome_rental_shop_app/widgets/animation_background.dart';
 import 'package:hirome_rental_shop_app/widgets/custom_image.dart';
 import 'package:hirome_rental_shop_app/widgets/custom_lg_button.dart';
+import 'package:hirome_rental_shop_app/widgets/custom_sm_button.dart';
 import 'package:hirome_rental_shop_app/widgets/link_text.dart';
 import 'package:hirome_rental_shop_app/widgets/product_card.dart';
 import 'package:hirome_rental_shop_app/widgets/quantity_button.dart';
@@ -85,7 +86,21 @@ class _OrderScreenState extends State<OrderScreen> {
                   fontSize: 14,
                 ),
               ),
-              const SizedBox(height: 8),
+              widget.authProvider.carts.isNotEmpty
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: CustomSmButton(
+                        label: '注文に進む',
+                        labelColor: kWhiteColor,
+                        backgroundColor: kRedColor,
+                        onPressed: () => showBottomUpScreen(
+                          context,
+                          const OrderCartScreen(),
+                        ),
+                      ),
+                    )
+                  : Container(),
+              const SizedBox(height: 4),
               Expanded(
                 child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                   stream: productService.streamList(),
@@ -144,31 +159,6 @@ class _OrderScreenState extends State<OrderScreen> {
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: Align(
-            alignment: Alignment.bottomRight,
-            child: ElevatedButton(
-              onPressed: widget.authProvider.carts.isNotEmpty
-                  ? () => showBottomUpScreen(
-                        context,
-                        const OrderCartScreen(),
-                      )
-                  : null,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: kRedColor,
-              ),
-              child: const Text(
-                '注文に進む',
-                style: TextStyle(
-                  color: kWhiteColor,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-        ),
       ],
     );
   }
@@ -215,96 +205,98 @@ class _ProductDetailsDialogState extends State<ProductDetailsDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       contentPadding: const EdgeInsets.all(16),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: double.infinity,
-            child: CustomImage(widget.product.image),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            '商品番号 : ${widget.product.number}',
-            style: const TextStyle(
-              color: kGreyColor,
-              fontSize: 12,
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              child: CustomImage(widget.product.image),
             ),
-          ),
-          Text(
-            widget.product.name,
-            style: const TextStyle(
-              color: kBlackColor,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+            const SizedBox(height: 8),
+            Text(
+              '商品番号 : ${widget.product.number}',
+              style: const TextStyle(
+                color: kGreyColor,
+                fontSize: 12,
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          QuantityButton(
-            quantity: requestQuantity,
-            unit: widget.product.unit,
-            onRemoved: () {
-              if (requestQuantity == 0) return;
-              setState(() {
-                requestQuantity -= 1;
-              });
-            },
-            onRemoved10: () {
-              if (requestQuantity == 0) return;
-              setState(() {
-                if (requestQuantity <= 10) {
-                  requestQuantity = 0;
-                } else {
-                  requestQuantity -= 10;
+            Text(
+              widget.product.name,
+              style: const TextStyle(
+                color: kBlackColor,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            QuantityButton(
+              quantity: requestQuantity,
+              unit: widget.product.unit,
+              onRemoved: () {
+                if (requestQuantity == 0) return;
+                setState(() {
+                  requestQuantity -= 1;
+                });
+              },
+              onRemoved10: () {
+                if (requestQuantity == 0) return;
+                setState(() {
+                  if (requestQuantity <= 10) {
+                    requestQuantity = 0;
+                  } else {
+                    requestQuantity -= 10;
+                  }
+                });
+              },
+              onAdded: () {
+                setState(() {
+                  requestQuantity += 1;
+                });
+              },
+              onAdded10: () {
+                setState(() {
+                  requestQuantity += 10;
+                });
+              },
+            ),
+            const SizedBox(height: 8),
+            CustomLgButton(
+              label: cart != null ? '数量を変更する' : 'カートに入れる',
+              labelColor: kWhiteColor,
+              backgroundColor: kBlueColor,
+              onPressed: () async {
+                if (requestQuantity > 0) {
+                  await widget.authProvider.addCarts(
+                    widget.product,
+                    requestQuantity,
+                  );
+                } else if (cart != null) {
+                  await widget.authProvider.removeCart(cart!);
                 }
-              });
-            },
-            onAdded: () {
-              setState(() {
-                requestQuantity += 1;
-              });
-            },
-            onAdded10: () {
-              setState(() {
-                requestQuantity += 10;
-              });
-            },
-          ),
-          const SizedBox(height: 8),
-          CustomLgButton(
-            label: cart != null ? '数量を変更する' : 'カートに入れる',
-            labelColor: kWhiteColor,
-            backgroundColor: kBlueColor,
-            onPressed: () async {
-              if (requestQuantity > 0) {
-                await widget.authProvider.addCarts(
-                  widget.product,
-                  requestQuantity,
-                );
-              } else if (cart != null) {
-                await widget.authProvider.removeCart(cart!);
-              }
-              if (!mounted) return;
-              Navigator.pop(context);
-            },
-          ),
-          const SizedBox(height: 16),
-          cart != null
-              ? Center(
-                  child: LinkText(
-                    label: 'カートから削除する',
-                    labelColor: kRedColor,
-                    onTap: () async {
-                      if (cart == null) return;
-                      await widget.authProvider.removeCart(cart!);
-                      if (!mounted) return;
-                      Navigator.pop(context);
-                    },
-                  ),
-                )
-              : Container(),
-          const SizedBox(height: 8),
-        ],
+                if (!mounted) return;
+                Navigator.pop(context);
+              },
+            ),
+            const SizedBox(height: 16),
+            cart != null
+                ? Center(
+                    child: LinkText(
+                      label: 'カートから削除する',
+                      labelColor: kRedColor,
+                      onTap: () async {
+                        if (cart == null) return;
+                        await widget.authProvider.removeCart(cart!);
+                        if (!mounted) return;
+                        Navigator.pop(context);
+                      },
+                    ),
+                  )
+                : Container(),
+            const SizedBox(height: 8),
+          ],
+        ),
       ),
     );
   }
