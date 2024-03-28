@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hirome_rental_shop_app/common/functions.dart';
 import 'package:hirome_rental_shop_app/common/style.dart';
-import 'package:hirome_rental_shop_app/models/cart.dart';
 import 'package:hirome_rental_shop_app/providers/auth.dart';
 import 'package:hirome_rental_shop_app/providers/order.dart';
 import 'package:hirome_rental_shop_app/widgets/cart_list.dart';
@@ -58,19 +57,12 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
               const SizedBox(height: 16),
               const Text('注文する商品'),
               const Divider(height: 1, color: kGreyColor),
-              SizedBox(
-                height: 350,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: authProvider.carts.length,
-                  itemBuilder: (context, index) {
-                    CartModel cart = authProvider.carts[index];
-                    return CartList(cart: cart);
-                  },
-                ),
+              Column(
+                children: authProvider.carts.map((cart) {
+                  return CartList(cart: cart);
+                }).toList(),
               ),
-              const Divider(height: 1, color: kGreyColor),
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
               buttonDisabled
                   ? const CustomLgButton(
                       label: '注文する',
@@ -119,6 +111,7 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
                   },
                 ),
               ),
+              const SizedBox(height: 40),
             ],
           ),
         ),
