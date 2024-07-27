@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hirome_rental_shop_app/common/functions.dart';
 import 'package:hirome_rental_shop_app/common/style.dart';
+import 'package:hirome_rental_shop_app/models/shop_login.dart';
 import 'package:hirome_rental_shop_app/providers/auth.dart';
 import 'package:hirome_rental_shop_app/providers/order.dart';
+import 'package:hirome_rental_shop_app/services/shop_login.dart';
 import 'package:hirome_rental_shop_app/widgets/cart_list.dart';
 import 'package:hirome_rental_shop_app/widgets/custom_lg_button.dart';
 import 'package:hirome_rental_shop_app/widgets/link_text.dart';
@@ -17,6 +19,7 @@ class OrderCartScreen extends StatefulWidget {
 }
 
 class _OrderCartScreenState extends State<OrderCartScreen> {
+  ShopLoginService shopLoginService = ShopLoginService();
   bool buttonDisabled = false;
 
   @override
@@ -78,9 +81,18 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
                         setState(() {
                           buttonDisabled = true;
                         });
+                        String createdUserName = '';
+                        ShopLoginModel? shopLogin =
+                            await shopLoginService.select(
+                          id: authProvider.authUser?.uid,
+                        );
+                        if (shopLogin != null) {
+                          createdUserName = shopLogin.requestName;
+                        }
                         String? error = await orderProvider.create(
                           shop: authProvider.shop,
                           carts: authProvider.carts,
+                          createdUserName: '',
                         );
                         if (error != null) {
                           if (!mounted) return;

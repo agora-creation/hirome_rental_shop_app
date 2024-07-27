@@ -196,6 +196,13 @@ class _OrderDetailsDialogState extends State<OrderDetailsDialog> {
               ),
             ),
             Text(
+              '注文者名 : ${widget.order.createdUserName}',
+              style: const TextStyle(
+                color: kGreyColor,
+                fontSize: 14,
+              ),
+            ),
+            Text(
               'ステータス : ${widget.order.statusText()}',
               style: const TextStyle(
                 color: kGreyColor,
