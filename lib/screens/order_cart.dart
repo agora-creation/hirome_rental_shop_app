@@ -92,7 +92,7 @@ class _OrderCartScreenState extends State<OrderCartScreen> {
                         String? error = await orderProvider.create(
                           shop: authProvider.shop,
                           carts: authProvider.carts,
-                          createdUserName: '',
+                          createdUserName: createdUserName,
                         );
                         if (error != null) {
                           if (!mounted) return;
