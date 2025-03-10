@@ -1,0 +1,2 @@
+C:/workspace/StudioProjects/hirome_rental_shop_app/android/app/.cxx/Debug/403t1f3a/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/workspace/StudioProjects/hirome_rental_shop_app/android/app/.cxx/Debug/403t1f3a/arm64-v8a/CMakeFiles/rebuild_cache.dir
