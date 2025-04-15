@@ -57,6 +57,7 @@ class OrderProvider with ChangeNotifier {
         'carts': newCarts,
         'status': 0,
         'createdUserName': createdUserName,
+        'updatedUserName': createdUserName,
         'updatedAt': DateTime.now(),
         'createdAt': DateTime.now(),
       });
@@ -90,6 +91,7 @@ class OrderProvider with ChangeNotifier {
         'carts': newCarts,
         'status': 0,
         'createdUserName': order.createdUserName,
+        'updatedUserName': order.createdUserName,
         'updatedAt': DateTime.now(),
         'createdAt': DateTime.now(),
       });
@@ -109,6 +111,7 @@ class OrderProvider with ChangeNotifier {
       orderService.update({
         'id': order.id,
         'status': 9,
+        'updatedUserName': order.createdUserName,
         'updatedAt': DateTime.now(),
       });
     } catch (e) {
